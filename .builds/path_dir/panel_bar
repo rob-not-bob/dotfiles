@@ -1,0 +1,21 @@
+#! /bin/sh
+#
+# Example panel for LemonBoy's bar
+
+. panel_colors
+
+prev_output=""
+
+while read -r line ; do
+	output=""
+	case $line in
+		W*)
+			output="$prev_output"
+			;;
+		*)
+			prev_output="$line"
+			output="$line"
+			;;
+	esac
+	printf "%s\n" "$output"
+done

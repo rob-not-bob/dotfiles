@@ -16,3 +16,10 @@
 !.Xresources
 !.Xmodmap
 !.fehbg
+!.builds/
+.builds/*
+!.builds/path_dir
+.builds/path_dir/*
+!.builds/path_dir/panel
+!.builds/path_dir/panel_bar
+!.builds/path_dir/panel_colors
