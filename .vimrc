@@ -45,6 +45,13 @@ nnoremap <space> za
 
 nnoremap j gj			" move vertically by visual line
 nnoremap k gk			
+" Emacs keybindings for movement when in insert mode
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 
 " SHORTCUTS
 

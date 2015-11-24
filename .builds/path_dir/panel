@@ -20,20 +20,15 @@ panel_music()
 
 	if [ "$isNotRunning" -ne "1" ]; then
 		musicCommand="sp play"
-		echo \#! /bin/sh > /home/ace/.builds/path_dir/temp.sh
-		sp eval >> /home/ace/.builds/path_dir/temp.sh
-		source /home/ace/.builds/path_dir/temp.sh
+		echo \#! /bin/sh > /tmp/song_info 
+		sp eval >> /tmp/song_info
+		source /tmp/song_info
 		if [ ! -z "$SPOTIFY_TITLE" ]; then
 			musicString="$musicString $SPOTIFY_TITLE - $SPOTIFY_ARTIST "
 		fi
 	fi
 	
 	echo -e "$musicString %{A:sp prev:}\uf049%{A} %{A:$musicCommand:}\uf04b\uf04c%{A} %{A:sp next:}\uf050%{A} %{F-}%{B-}"
-}
-
-panel_shortcuts()
-{
-	echo -e " %{A:subl3:}\uf121%{A} %{A:chromium:}\uf268%{A} %{A:firefox:}\uf269%{A}"
 }
 
 panel_clock()
@@ -71,7 +66,7 @@ panel_power()
 }
 
 while true; do
-	echo "%{S1}%{l}$(panel_shortcuts)%{r}$(panel_volume) $(panel_clock) $(panel_power)%{S} %{S0}%{l}$(panel_shortcuts)%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
+	echo "%{S1}%{r}$(panel_volume) $(panel_clock) $(panel_power)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
 	sleep 0.4s
 done &
 

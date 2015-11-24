@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. /home/ace/builds/path_dir/profile
+. /home/ace/.builds/path_dir/profile
 xmodmap ~/.Xmodmap
 xbindkeys
 xrdb ~/.Xresources
