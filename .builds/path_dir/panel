@@ -13,8 +13,7 @@ bspc config top_padding $PANEL_HEIGHT
 bspc control --subscribe > "$PANEL_FIFO" &
 numMonitors=$(bspc query -M | wc -l)
 
-panel_music()
-{
+panel_music() {
 	isNotRunning=$(sp eval | grep -c "Spotify is not running.")
 	musicCommand="spotify"
 	musicString="%{B#448588}%{F#EADAB2}"
@@ -32,13 +31,11 @@ panel_music()
 	echo -e "$musicString %{A:sp prev:}\uf049%{A} %{A:$musicCommand:}\uf04b\uf04c%{A} %{A:sp next:}\uf050%{A} %{F-}%{B-}"
 }
 
-panel_clock()
-{
+panel_clock() {
 	echo -e "$(clock -f '\uf073 %a %h %e \uf017 %-l:%M %p')"
 }
 
-panel_volume()
-{
+panel_volume() {
 	volStatus=$(amixer get Master | tail -n 1 | cut -d '[' -f 3 | sed 's/].*//g')
 	volLevel=$(amixer get Master | tail -n 1 | cut -d '[' -f 2 | sed 's/%.*//g')
 	volString="%%{F"
@@ -61,8 +58,7 @@ panel_volume()
 	printf "${volString} %3d%% %%{F-}" "$volLevel"
 }
 
-panel_power()
-{
+panel_power() {
 	echo -e "%{F#A34D4D}%{A:poweroff:}\uf011 %{A}%{F-}"
 }
 
