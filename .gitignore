@@ -5,6 +5,8 @@
 .config/*
 !.config/bspwm/
 !.config/bspwm/*
+!.config/sxhkd/
+!.config/sxhkd/sxhkdrc
 !.config/mpd/
 !.config/mpd/mpd.conf
 !.vimrc
@@ -23,3 +25,4 @@
 !.builds/path_dir/panel
 !.builds/path_dir/panel_bar
 !.builds/path_dir/panel_colors
+!.builds/path_dir/profile
