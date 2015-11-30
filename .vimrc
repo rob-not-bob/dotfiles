@@ -60,5 +60,5 @@ inoremap jk <esc>		" make jk exit visual mode
 " BACKUPS
 
 set backupdir=~/.vim/backup//
-set directory=~/.vim/swap//
 set undodir=~/.vim/undo//
+set noswapfile

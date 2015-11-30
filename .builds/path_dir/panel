@@ -35,6 +35,24 @@ panel_clock() {
 	echo -e "$(clock -f '\uf073 %a %h %e \uf017 %-l:%M %p')"
 }
 
+panel_battery() {
+	batteryLevel=$(acpi | cut -d ',' -f2 | sed 's/ //g' | sed 's/%//g')
+	batteryIcon=""
+	if [ "$batteryLevel" -gt "90" ]; then
+		batteryIcon="\uf240"
+	elif [ "$batteryLevel" -gt "70" ]; then
+		batteryIcon="\uf241"
+	elif [ "$batteryLevel" -gt "35" ]; then
+		batteryIcon="\uf242"
+	elif [ "$batteryLevel" -gt "10" ]; then
+		batteryIcon="\uf243"
+	else
+		batteryIcon="\uf244"
+	fi
+
+	echo -e "${batteryIcon} ${batteryLevel}%"
+}
+
 panel_volume() {
 	volStatus=$(amixer get Master | tail -n 1 | cut -d '[' -f 3 | sed 's/].*//g')
 	volLevel=$(amixer get Master | tail -n 1 | cut -d '[' -f 2 | sed 's/%.*//g')
@@ -66,7 +84,7 @@ while true; do
 	if [ "$numMonitors" -eq "2" ]; then
 		echo "%{S1}%{r}$(panel_volume) $(panel_clock) $(panel_power)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
 	else
-		echo "%{r}$(panel_volume) $(panel_clock) $(panel_power)" > "$PANEL_FIFO"
+		echo "%{r}$(panel_battery) $(panel_volume) $(panel_clock) $(panel_power)" > "$PANEL_FIFO"
 	fi
 	sleep 0.4s
 done &

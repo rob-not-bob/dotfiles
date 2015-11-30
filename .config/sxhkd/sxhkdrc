@@ -8,14 +8,11 @@ super + alt + Escape
 alt + w
 	bspc window -c
 
-alt + t
-	bspc desktop -l next
-
 alt + b
 	bspc desktop -B
 
-alt + {s,f}
-	bspc window -t {floating,fullscreen}
+alt + {t,p,s,f}
+	bspc window -t {tiled,pseudo_tiled,floating,fullscreen}
 
 alt + {grave,Tab}
 	bspc {window,desktop} -f last
