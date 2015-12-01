@@ -1,4 +1,5 @@
 #! /bin/bash
+
 if [ $(pgrep -cx panel) -gt 1 ] ; then
 	printf "%s\n" "The panel is already running." >&2
 	exit 1
@@ -32,7 +33,7 @@ panel_music() {
 }
 
 panel_clock() {
-	echo -e "$(clock -f '\uf073 %a %h %e \uf017 %-l:%M %p')"
+	echo -e "$(clock -f '\uf073 %a %h %-e \uf017 %-l:%M %p')"
 }
 
 panel_battery() {
