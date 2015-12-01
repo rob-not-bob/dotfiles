@@ -36,6 +36,10 @@ panel_clock() {
 }
 
 panel_battery() {
+	if !(hash acpi 2>/dev/null); then
+		return
+	fi
+
 	batteryLevel=$(acpi | cut -d ',' -f2 | sed 's/ //g' | sed 's/%//g')
 	batteryIcon=""
 	if [ "$batteryLevel" -gt "90" ]; then
