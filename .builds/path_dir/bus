@@ -1,0 +1,27 @@
+#! /bin/sh
+
+beginDate=946710000 # Jan 1st 2000 MST
+timeToBus=1200 # 20 minutes
+
+# 8:29 9:31 11:02 11:32 12:02 13:32 14:31
+busLeaveTimes=(946740540 946744260 946749720 946751520 946753320 946758720 946762260)
+# 8:54 9:53 11:24 11:54 12:24 13:54 14:57
+busEndTimes=(946742040 946745580 946751040 946752840 946754640 946760040 946763820)
+
+desiredTime=$(date -d "Jan 1 2000 ${1} MST" +"%s")
+endIndex=0
+
+for (( i=${#busLeaveTimes[@]}-1 ; i>=0 ; i--)); do 
+	if [ "$desiredTime" -gt "${busEndTimes[$i]}" ]; then
+		endIndex=$i
+		break
+	fi
+done
+
+leaveTime=$(expr ${busLeaveTimes[$endIndex]} - $timeToBus)
+almFormatTime=$(date -d @${leaveTime} +"%-l%M%P")
+
+firefox "http://cd.justinjc.com/${almFormatTime}" &
+
+leaveTime=$(date -d @${leaveTime} +"%-l:%M %p")
+echo -e "#!/bin/sh\nexport leaveTime=\"$leaveTime\"" > /tmp/busTime
