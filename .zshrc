@@ -70,5 +70,5 @@ function cd() {
 }
 
 export cd
-alias cwd='cd "$(cat /tmp/.cwd)"'
+alias cwd='cd "$(cat /tmp/.cwd &>/dev/null)"'
 cwd
