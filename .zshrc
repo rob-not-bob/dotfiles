@@ -62,3 +62,13 @@ zle -N insert-sudo insert_sudo
 bindkey "^[s" insert-sudo
 
 PS1='%C → '
+
+# function to switch and save the current path
+function cd() {
+	builtin cd "$@";
+	echo "$PWD" > /tmp/.cwd;
+}
+
+export cd
+alias cwd='cd "$(cat /tmp/.cwd)"'
+cwd
