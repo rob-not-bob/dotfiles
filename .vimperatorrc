@@ -1,0 +1,29 @@
+" no beeping
+set visualbell
+
+" command line completion
+set autocomplete
+set wildmode=list:longest,full
+
+" all type pages are opened in new tab
+set newtab=all
+
+" max items to display
+set maxitems=10
+
+" show search pattern matches as typed
+set incsearch
+
+colorscheme zenburn
+
+map <silent> <C-F8> :js toggle_bottombar()<CR>
+
+:js << EOF
+function toggle_bottombar() {
+  var bb = document.getElementById('liberator-bottombar');
+  if (!bb)
+    return;
+  bb.style.height = (bb.style.height == '') ? '0px' : '';
+  bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
+}
+EOF
