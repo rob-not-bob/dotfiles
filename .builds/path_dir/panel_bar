@@ -1,21 +1,62 @@
 #! /bin/sh
 #
-# Example panel for LemonBoy's bar
+# Example panel for lemonbar
 
 . panel_colors
 
+num_mon=$(bspc query -M | wc -l)
 prev_output=""
 
 while read -r line ; do
-	output=""
 	case $line in
 		W*)
-			output="$prev_output"
+			# bspwm's state
+			wm=""
+			IFS=':'
+			set -- ${line#?}
+			while [ $# -gt 0 ] ; do
+				item=$1
+				name=${item#?}
+				case $item in
+					[mM]*)
+						[ $num_mon -lt 2 ] && shift && continue
+						case $item in
+							m*)
+								# monitor
+								FG=$COLOR_MONITOR_FG
+								BG=$COLOR_MONITOR_BG
+								;;
+							M*)
+								# focused monitor
+								FG=$COLOR_FOCUSED_MONITOR_FG
+								BG=$COLOR_FOCUSED_MONITOR_BG
+								;;
+						esac
+						wm="${wm}%{F${FG}}%{B${BG}} ${name} %{B-}%{F-}"
+						;;
+					[fFoOuU]*)
+						case $item in
+							[fou]*)
+								# free desktop
+								FG=$COLOR_FREE_FG
+								BG=$COLOR_FREE_BG
+								;;
+							[FOU]*)
+								# focused desktop
+								FG=$COLOR_FOCUSED_FREE_FG
+								BG=$COLOR_FOCUSED_FREE_BG
+								;;
+						esac
+						wm="${wm}%{F${FG}}%{B${BG}} ${name} %{B-}%{F-}"
+						;;
+				esac
+				shift
+			done
 			;;
 		*)
-			prev_output="$line"
-			output="$line"
-			;;
+				prev_output="$line"
+				output="$line"
+				;;
 	esac
-	printf "%s\n" "$output"
+	printf "%s\n" "%{l}${wm}${output}"
 done

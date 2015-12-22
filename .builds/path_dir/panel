@@ -17,7 +17,7 @@ numMonitors=$(bspc query -M | wc -l)
 panel_music() {
 	isNotRunning=$(sp eval | grep -c "Spotify is not running.")
 	musicCommand="spotify"
-	musicString="%{B#448588}%{F#EADAB2}"
+	musicString="%{B#00A0B0}%{F#EADAB2}"
 
 	if [ "$isNotRunning" -ne "1" ]; then
 		musicCommand="sp play"
@@ -33,7 +33,7 @@ panel_music() {
 }
 
 panel_clock() {
-	echo -e "$(clock -f '%a, %h %-e  %H:%M')"
+	echo -e "%{A:poweroff:}%{A3:reboot:}%{B#248791} $(clock -f '%a, %h %-e  %H:%M') %{B-}%{A}%{A}"
 }
 
 panel_bus() {
@@ -43,7 +43,7 @@ panel_bus() {
 
 	source /tmp/busTime
 	
-	echo -e "%{F#98D8ED}\uf207 $leaveTime%{F-}"
+	echo -e "%{F#248791}\uf207 $leaveTime%{F-}"
 }
 
 panel_battery() {
@@ -74,7 +74,7 @@ panel_volume() {
 	volString="%%{F"
 
 	if [ "$volStatus" == "on" ]; then
-		volString="${volString}#ADFF2F}"
+		volString="${volString}#98CC52}"
 
 		if [ "$volLevel" -eq "0" ]; then
 			volString="${volString}\uf026"
@@ -85,21 +85,20 @@ panel_volume() {
 		fi
 		
 	else
-		volString="${volString}#CD5C5C}\uf026"
+		volString="${volString}#CC525B}\uf026"
 	fi
-
 	printf "${volString} %3d%% %%{F-}" "$volLevel"
 }
 
 panel_power() {
-	echo -e "%{F#A34D4D}%{A:poweroff:}\uf011 %{A}%{F-}"
+	echo -e "%{F#CC333F}%{A:poweroff:}\uf011 %{A}%{F-}"
 }
 
 while true; do
 	if [ "$numMonitors" -eq "2" ]; then
 		echo "%{S1}%{r}$(panel_bus) $(panel_volume) $(panel_clock) $(panel_power)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
 	else
-		echo "%{r}$(panel_battery) $(panel_volume) $(panel_clock) $(panel_power)" > "$PANEL_FIFO"
+		echo "%{r}$(panel_battery) $(panel_volume) $(panel_clock)" > "$PANEL_FIFO"
 	fi
 	sleep 0.4s
 done &

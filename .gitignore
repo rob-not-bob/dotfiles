@@ -30,6 +30,6 @@
 !.builds/path_dir/sp
 !.vimperatorrc
 !.vimperator
-!.vimperator/*
+.vimperator/info
+.vimperator/info/*
 !.vimperator/*/*
-.vimperator/*/*/*
