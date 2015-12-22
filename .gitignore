@@ -28,3 +28,8 @@
 !.builds/path_dir/profile
 !.builds/path_dir/bus
 !.builds/path_dir/sp
+!.vimperatorrc
+!.vimperator
+!.vimperator/*
+!.vimperator/*/*
+!.vimperator/*/*/*
