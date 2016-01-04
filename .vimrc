@@ -45,7 +45,7 @@ nnoremap <space> za
 
 nnoremap j gj			" move vertically by visual line
 nnoremap k gk			
-" Emacs keybindings for movement when in insert mode
+" Vim keybindings for movement when in insert mode
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 inoremap <C-j> <Down>
@@ -54,6 +54,8 @@ inoremap <C-k> <Up>
 " SHORTCUTS
 
 inoremap jk <esc>		" make jk exit visual mode
+cnoremap <C-p> <Up>
+cnoremap <C-n> <Down>	" Scroll command history with C-p/n instead of up/down
 
 " BACKUPS
 

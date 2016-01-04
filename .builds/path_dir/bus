@@ -1,14 +1,16 @@
 #! /bin/sh
 
 beginDate=946710000 # Jan 1st 2000 MST
-timeToBus=1200 # 20 minutes
+timeToBus=1200 # 20 minutes = 5 minute car warmup, 10 minute drive, 5 minute cushion for bus
+workWalkTime=420 # 7 minutes
 
-# 8:29 9:31 11:02 11:32 12:02 12:32 13:32 14:31
-busLeaveTimes=(946740540 946744260 946749720 946751520 946753320 946755120 946756920 946758720 946762260)
-# 8:54 9:53 11:24 11:54 12:24 12:53 13:54 14:57
-busEndTimes=(946742040 946745580 946751040 946752840 946754640 946756380 946758420 946760040 946763820)
+# 8:16 8:31 13:13 13:28 13:43
+busLeaveTimes=(946739760 946740660 946757580 946758480 946759380)
+# 8:38 8:58 13:32 13:47 14:02
+busEndTimes=(946741080 946742280 946758720 946759620 946760520)
 
 desiredTime=$(date -d "Jan 1 2000 ${1} MST" +"%s")
+desiredTime=$(expr ${desiredTime} - ${workWalkTime})
 endIndex=0
 
 for (( i=${#busLeaveTimes[@]}-1 ; i>=0 ; i--)); do 
