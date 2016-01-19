@@ -1,8 +1,6 @@
 " COLORS
 syntax on				" syntax highlighting on
-colorscheme molokai		" set my color scheme
-let g:molokai_original = 1
-let g:rehash256 = 1
+colorscheme up			" set my color scheme
 
 " SPACES AND TABS
 
@@ -63,3 +61,12 @@ set nobackup
 set nowritebackup
 set undodir=~/.vim/undo//
 set noswapfile
+
+" Pathogen
+execute pathogen#infect()
+
+" GUI
+set guioptions-=m		" Remove menu bar
+set guioptions-=T		" Remove toolbar
+set guioptions-=r		" Remove right scrollbar
+set guioptions-=L		" Remove left scrollbar
