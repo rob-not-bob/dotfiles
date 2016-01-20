@@ -17,7 +17,7 @@ numMonitors=$(bspc query -M | wc -l)
 panel_music() {
 	isNotRunning=$(sp eval | grep -c "Spotify is not running.")
 	musicCommand="spotify"
-	musicString="%{B#00A0B0}%{F#EADAB2}"
+	musicString="%{B#248791}%{F#EADAB2}"
 
 	if [ "$isNotRunning" -ne "1" ]; then
 		musicCommand="sp play"
@@ -96,7 +96,7 @@ panel_power() {
 
 while true; do
 	if [ "$numMonitors" -eq "2" ]; then
-		echo "%{S1}%{r}$(panel_bus) $(panel_volume) $(panel_clock) $(panel_power)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
+		echo "%{S1}%{r}$(panel_bus) $(panel_volume) $(panel_clock)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
 	else
 		echo "%{r}$(panel_battery) $(panel_volume) $(panel_clock)" > "$PANEL_FIFO"
 	fi
