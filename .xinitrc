@@ -8,8 +8,8 @@ xset -b
 xrdb ~/.Xresources
 sh ~/.fehbg &
 
-if [ -f ~/.local_machine ]
-	source ~/.local_machine;
+if [ -f ~/.local_machine ]; then
+	eval ~/.local_machine
 fi
 
 sxhkd &
