@@ -43,6 +43,8 @@ alias ez='vim ~/.zshrc'
 
 alias grep='grep --color=auto'
 
+alias lsr='ls -l ./*(mh-1)'
+
 HISTFILE=~/.history
 
 SAVEHIST=10000
@@ -86,3 +88,5 @@ man() {
     LESS_TERMCAP_us=$'\E[04;38;5;146m' \
     man "$@"
 }
+
+export PATH="$JAVA_HOME/bin:$PATH"
