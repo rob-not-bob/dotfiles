@@ -49,6 +49,12 @@ inoremap <C-l> <Right>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 
+" Vim keybindings for navigating splits
+nnoremap <C-h> <C-W>h
+nnoremap <C-l> <C-W>l
+nnoremap <C-j> <C-W>j
+nnoremap <C-k> <C-W>k
+
 " SHORTCUTS
 
 inoremap jk <esc>		" make jk exit visual mode
