@@ -12,6 +12,7 @@ while read -r line ; do
 		W*)
 			# bspwm's state
 			wm=""
+			mon_num=$num_mon
 			IFS=':'
 			set -- ${line#?}
 			while [ $# -gt 0 ] ; do
@@ -21,18 +22,14 @@ while read -r line ; do
 					[mM]*)
 						[ $num_mon -lt 2 ] && shift && continue
 						case $item in
-							m*)
+							[mM]*)
 								# monitor
 								FG=$COLOR_MONITOR_FG
 								BG=$COLOR_MONITOR_BG
 								;;
-							M*)
-								# focused monitor
-								FG=$COLOR_FOCUSED_MONITOR_FG
-								BG=$COLOR_FOCUSED_MONITOR_BG
-								;;
 						esac
-						wm="${wm}%{F${FG}}%{B${BG}} ${name} %{B-}%{F-}"
+						mon_num=$(($mon_num - 1))
+						wm="${wm} %{S${mon_num}}"
 						;;
 					[fFoOuU]*)
 						case $item in
@@ -51,6 +48,9 @@ while read -r line ; do
 						;;
 				esac
 				shift
+				if [ $num_mon -gt 1 ]; then
+					wm="${wm}%{S} "
+				fi
 			done
 			;;
 		*)
