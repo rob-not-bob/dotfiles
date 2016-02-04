@@ -90,3 +90,13 @@ man() {
 }
 
 export PATH="$JAVA_HOME/bin:$PATH"
+
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _expand _complete _ignored
+zstyle ':completion:*' glob set
+zstyle :compinstall filename '/home/ace/.zshrc'
+
+autoload -Uz compinit
+compinit
+# End of lines added by compinstall
