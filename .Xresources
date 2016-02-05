@@ -6,10 +6,10 @@ URxvt.boldFont: xft:Hack:pixelsize=12:antialias=true:autohinting=true:Bold
 URxvt.perl-ext-common: default,matcher,vtwheel
 URxvt.url-launcher: /usr/bin/firefox
 URxvt.matcher.button: 1
-URxvt*depth: 32
+URxvt.depth: 32
 
 
-URxvt*background: #101010
+URxvt.background: #282828
 *foreground: #d0d0d0
 
 URxvt*color0: #101010
