@@ -9,6 +9,7 @@
 !.config/sxhkd/sxhkdrc
 !.config/mpd/
 !.config/mpd/mpd.conf
+!.config/compton.conf
 !.vimrc
 !.vim/
 !.vim/*
