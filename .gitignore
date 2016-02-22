@@ -29,6 +29,7 @@
 !.builds/path_dir/profile
 !.builds/path_dir/bus
 !.builds/path_dir/sp
+!.builds/path_dir/cwd
 !.vimperatorrc
 !.vimperator
 .vimperator/info
