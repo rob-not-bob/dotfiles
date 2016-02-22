@@ -45,6 +45,9 @@ alias grep='grep --color=auto'
 
 alias lsr='ls -l ./*(mh-1)'
 
+alias c="xclip -selection clipboard"
+alias p="xclip -o -selection clipboard"
+
 HISTFILE=~/.history
 
 SAVEHIST=10000
@@ -66,16 +69,6 @@ zle -N insert-sudo insert_sudo
 bindkey "^[s" insert-sudo
 
 PS1='%C → '
-
-# function to switch and save the current path
-function cd() {
-	builtin cd "$@";
-	echo "$PWD" > /tmp/.cwd;
-}
-
-export cd
-alias cwd='cd "$(cat /tmp/.cwd &>/dev/null)"'
-cwd
 
 # Color man pages
 man() {

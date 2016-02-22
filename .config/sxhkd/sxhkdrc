@@ -86,7 +86,11 @@ super + {Up,Down}
 #
 
 alt + Return
-	urxvt
+	if [ -e ~/.builds/path_dir/cwd ]; then; \
+	~/.builds/path_dir/cwd; \
+	else;\
+	urxvt;\
+	fi
 
 alt + space
 	dmenu_run
