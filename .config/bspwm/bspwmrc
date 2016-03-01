@@ -19,7 +19,14 @@ elif [ "$numMonitors" -eq "1" ]; then
 	bspc monitor -d $(echo -e '\uf109') $(echo -e '\uf120') $(echo -e '\uf145') $(echo -e '\uf11b') $(echo -e '\uf0ac') $(echo -e '\uf141') $(echo -e '\uf0c3') $(echo -e '\uf001')
 fi
 
-bspc rule -a Spotify desktop=^8 follow=on
+# Android
+bspc rule -a Genymotion desktop=^6
+bspc rule -a "Genymotion Player" desktop=^6
+bspc rule -a jetbrains-studio desktop=^5
+
+# Spotify sets WM_CLASS too late as such its name is an empty string
+# bspc rule -a Spotify desktop=^8 follow=on
+bspc rule -a "" desktop=^8 follow=on
 
 panel &
 compton --config ~/.config/compton.conf -b
