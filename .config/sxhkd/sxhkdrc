@@ -8,14 +8,17 @@ super + alt + Escape
 alt + w
 	bspc window -c
 
+alt + a
+	bspc monitor -f next
+
 alt + b
 	bspc desktop -B
 
 alt + {t,p,s,f}
 	bspc window -t {tiled,pseudo_tiled,floating,fullscreen}
 
-alt + {grave,Tab,a}
-	bspc {window,desktop,monitor} -f last
+alt + {grave,Tab}
+	bspc {window,desktop} -f last
 
 alt + apostrophe
 	bspc window -s last
