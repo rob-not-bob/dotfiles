@@ -14,8 +14,8 @@ alt + b
 alt + {t,p,s,f}
 	bspc window -t {tiled,pseudo_tiled,floating,fullscreen}
 
-alt + {grave,Tab}
-	bspc {window,desktop} -f last
+alt + {grave,Tab,a}
+	bspc {window,desktop,monitor} -f last
 
 alt + apostrophe
 	bspc window -s last
@@ -56,10 +56,21 @@ alt + ctrl + shift + {h,j,k,l}
 	bspc window -e {right -10,up +10,down -10,left +10}
 
 alt + ctrl + {1-9}
-	bspc window -r 0.{1-9}
+	bspc window -r 0.{1-9}; \
+	bspc window -p left
 
-alt + {_,shift + }{1-9,0}
-	bspc {desktop -f,window -d} ^{1-9,10}
+alt + {1-9}
+	num={1-9}; \
+	if [ "$(bspc query -m focused -M)" != "DVI-I-1" ]; then; \
+		deskPerMon=$(($(bspc query -D | wc -l) / $(bspc query -M | wc -l))); \
+		deskNum=$(($num+$deskPerMon)); \
+		bspc desktop -f ^"$deskNum"; \
+	else; \
+		bspc desktop -f ^"$num"; \
+	fi
+
+alt + shift + {1-9,0}
+	bspc window -d ^{1-9,10}
 
 ~button1
 	bspc pointer -g focus
@@ -79,7 +90,7 @@ super + {Up,Down}
 	if [ "$x" -lt 0 ]; then; x=0; fi; \
 	bspc config window_gap $x; \
 	for desktop in $(bspc query -D); do; \
-	bspc config -d $desktop window_gap $x; \
+		bspc config -d $desktop window_gap $x; \
 	done
 #
 # wm independent hotkeys
@@ -87,9 +98,9 @@ super + {Up,Down}
 
 alt + Return
 	if [ -e ~/.builds/path_dir/cwd ]; then; \
-	~/.builds/path_dir/cwd; \
+		~/.builds/path_dir/cwd; \
 	else;\
-	urxvt;\
+		urxvt;\
 	fi
 
 alt + space
