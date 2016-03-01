@@ -64,8 +64,9 @@ alt + ctrl + {1-9}
 
 alt + {1-9}
 	num={1-9}; \
-	if [ "$(bspc query -m focused -M)" != "DVI-I-1" ]; then; \
-		deskPerMon=$(($(bspc query -D | wc -l) / $(bspc query -M | wc -l))); \
+	numMon=$(bspc query -M | wc -l); \
+	if [ "$(bspc query -m focused -M)" != "DVI-I-1" ] && [ "$numMon" -gt "1" ]; then; \
+		deskPerMon=$(($(bspc query -D | wc -l) / $numMon)); \
 		deskNum=$(($num+$deskPerMon)); \
 		bspc desktop -f ^"$deskNum"; \
 	else; \
