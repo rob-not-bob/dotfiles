@@ -82,7 +82,7 @@ man() {
     man "$@"
 }
 
-export PATH="$JAVA_HOME/bin:$PATH"
+export PATH="$JAVA_HOME/bin:/home/ace/.gem/ruby/2.3.0/bin:$PATH"
 
 # The following lines were added by compinstall
 
