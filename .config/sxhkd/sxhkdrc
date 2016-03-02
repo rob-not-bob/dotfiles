@@ -58,7 +58,7 @@ alt + ctrl + {h,j,k,l}
 alt + ctrl + shift + {h,j,k,l}
 	bspc window -e {right -10,up +10,down -10,left +10}
 
-alt + ctrl + {1-9}
+super + alt {1-9}
 	bspc window -r 0.{1-9}; \
 	bspc window -p left
 
