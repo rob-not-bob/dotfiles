@@ -11,6 +11,10 @@ alt + w
 alt + a
 	bspc monitor -f next
 
+alt + shift + a
+	bspc window -m next; \
+	bspc monitor -f next
+
 alt + b
 	bspc desktop -B
 
