@@ -105,8 +105,8 @@ super + {Up,Down}
 #
 
 alt + Return
-	if [ -e ~/.builds/path_dir/cwd ]; then; \
-		~/.builds/path_dir/cwd; \
+	if [ -e ~/bin/cwd ]; then; \
+		~/bin/cwd; \
 	else;\
 		urxvt;\
 	fi

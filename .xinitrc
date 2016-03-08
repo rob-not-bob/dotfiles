@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ~/.builds/path_dir/profile
+. ~/bin/profile
 xmodmap ~/.Xmodmap
 xbindkeys
 # Caps lock as esc and as ctrl
