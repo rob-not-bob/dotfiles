@@ -6,7 +6,7 @@ super + alt + Escape
 	pkill -x panel; bspc quit
 
 alt + w
-	bspc window -c
+	bspc node -c
 
 alt + a
 	bspc monitor -f next
@@ -19,30 +19,32 @@ alt + b
 	bspc desktop -B
 
 alt + {t,p,s,f}
-	bspc window -t {tiled,pseudo_tiled,floating,fullscreen}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 alt + {grave,Tab}
-	bspc {window,desktop} -f last
+	bspc {node,desktop} -f last
 
 alt + apostrophe
-	bspc window -s last
+	bspc node -s last
 
+# Needs fixing
 alt + {o,i}
 	bspc control --record-history off; \
-	bspc window {older,newer} -f; \
+	bspc node {older,newer} -f; \
 	bspc control --record-history on
 
+# Needs fixing / not sure what it does
 alt + y
-	bspc window -w last.manual
+	bspc node -w last.manual
 
 alt + m
-	bspc window -s biggest
+	bspc node -s biggest
 
 alt + {_,shift + }{h,j,k,l}
-	bspc window -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
 alt + {_,shift + }c
-	bspc window -f {next,prev}
+	bspc node -f {next,prev}
 
 alt + {comma,period}
 	bspc desktop -C {backward,forward}
@@ -51,34 +53,29 @@ alt + bracket{left,right}
 	bspc desktop -f {prev,next}.occupied
 
 super + alt + {h,j,k,l}
-	bspc window -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
 super + alt + {_,shift + }space
-	bspc {window -p cancel,desktop -c}
+	bspc {node -p cancel,query -N -d | xargs -I id -n 1 bspc node id -p cancel}
 
 alt + ctrl + {h,j,k,l}
-	bspc window -e {left -10,down +10,up -10,right +10}
+	bspc node -z {left -10 0,bottom 0 10,top 0 -10,right 10 0}
 
 alt + ctrl + shift + {h,j,k,l}
-	bspc window -e {right -10,up +10,down -10,left +10}
+	bspc node -z {right -10 0,top 0 10,bottom 0 -10,left 10 0}
 
-super + alt {1-9}
-	bspc window -r 0.{1-9}; \
-	bspc window -p left
+alt + ctrl + {x,y,z}
+	bspc node -g {locked,sticky,private}
+
+super + alt + {1-9}
+	bspc node -o 0.{1-9}; \
+	bspc node -p west
 
 alt + {1-9}
-	num={1-9}; \
-	numMon=$(bspc query -M | wc -l); \
-	if [ "$(bspc query -m focused -M)" != "DVI-I-1" ] && [ "$numMon" -gt "1" ]; then; \
-		deskPerMon=$(($(bspc query -D | wc -l) / $numMon)); \
-		deskNum=$(($num+$deskPerMon)); \
-		bspc desktop -f ^"$deskNum"; \
-	else; \
-		bspc desktop -f ^"$num"; \
-	fi
+	bspc desktop -f ^{1-9}
 
 alt + shift + {1-9,0}
-	bspc window -d ^{1-9,10}
+	bspc node -d ^{1-9,10}
 
 ~button1
 	bspc pointer -g focus

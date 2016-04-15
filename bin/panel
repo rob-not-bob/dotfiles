@@ -11,7 +11,7 @@ trap 'trap - TERM; kill 0' INT TERM QUIT EXIT
 mkfifo "$PANEL_FIFO"
 
 bspc config top_padding $PANEL_HEIGHT
-bspc control --subscribe > "$PANEL_FIFO" &
+bspc subscribe report > "$PANEL_FIFO" &
 numMonitors=$(bspc query -M | wc -l)
 
 panel_music() {
@@ -96,7 +96,7 @@ panel_power() {
 
 while true; do
 	if [ "$numMonitors" -eq "2" ]; then
-		echo "%{S1}%{r}$(panel_bus) $(panel_volume) $(panel_clock)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
+		echo "%{S1}%{r}$(panel_volume) $(panel_clock)%{S} %{S0}%{r}$(panel_music)%{S}" > "$PANEL_FIFO"
 	else
 		echo "%{r}$(panel_battery) $(panel_volume) $(panel_clock)" > "$PANEL_FIFO"
 	fi
