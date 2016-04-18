@@ -9,12 +9,14 @@ bspc config borderless_monocle  true
 bspc config gapless_monocle     true
 bspc config focus_by_distance   true
 bspc config focused_border_color "#248791"
-bscp config normal_border_color	"#282828"
+bspc config normal_border_color	"#282828"
+bspc config presel_feedback_color "#248791"
 
 numMonitors=$(bspc query -M | wc -l)
 if [ "$numMonitors" -eq "2" ]; then
 	bspc monitor DVI-I-1 -d $(echo -e '\uf108') $(echo -e '\uf120') $(echo -e '\uf145') $(echo -e '\uf11b')
-	bspc monitor HDMI-0 -d $(echo -e '\uf0ac') $(echo -e '\uf141') $(echo -e '\uf0c3') $(echo -e '\uf001') 
+	bspc monitor HDMI-0 -d $(echo -e '\uf0ac') $(echo -e '\uf141') $(echo -e '\uf0c3') $(echo -e '\uf001')
+	bspc monitor HDMI-0 -s DVI-I-1
 elif [ "$numMonitors" -eq "1" ]; then
 	bspc monitor -d $(echo -e '\uf109') $(echo -e '\uf120') $(echo -e '\uf145') $(echo -e '\uf11b') $(echo -e '\uf0ac') $(echo -e '\uf141') $(echo -e '\uf0c3') $(echo -e '\uf001')
 fi

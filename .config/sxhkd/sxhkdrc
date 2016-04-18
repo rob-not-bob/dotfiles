@@ -15,27 +15,28 @@ alt + shift + a
 	bspc window -m next; \
 	bspc monitor -f next
 
-alt + b
-	bspc desktop -B
+alt + {_, shift + } r
+	bspc node @parent -R {90,-90}
 
-alt + {t,p,s,f}
+alt + {p,c}
+	bspc node -f @{parent,1}
+
+alt + b
+	bspc node @ -B
+
+alt + {t,shift + t,s,f}
 	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
 
 alt + {grave,Tab}
 	bspc {node,desktop} -f last
 
+alt + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
 alt + apostrophe
 	bspc node -s last
-
-# Needs fixing
-alt + {o,i}
-	bspc control --record-history off; \
-	bspc node {older,newer} -f; \
-	bspc control --record-history on
-
-# Needs fixing / not sure what it does
-alt + y
-	bspc node -w last.manual
 
 alt + m
 	bspc node -s biggest
@@ -45,9 +46,6 @@ alt + {_,shift + }{h,j,k,l}
 
 alt + {_,shift + }c
 	bspc node -f {next,prev}
-
-alt + {comma,period}
-	bspc desktop -C {backward,forward}
 
 alt + bracket{left,right}
 	bspc desktop -f {prev,next}.occupied
@@ -69,7 +67,7 @@ alt + ctrl + {x,y,z}
 
 super + alt + {1-9}
 	bspc node -o 0.{1-9}; \
-	bspc node -p west
+	bspc node -p east
 
 alt + {1-9}
 	bspc desktop -f ^{1-9}
