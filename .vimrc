@@ -39,6 +39,10 @@ set foldmethod=indent	" fold based on indent level
 " space open closes folds
 nnoremap <space> za
 
+" SPLITS
+set splitbelow		" Split to bottom and right which feels more natural
+set splitright
+
 " MOVEMENT
 
 nnoremap j gj			" move vertically by visual line
@@ -50,10 +54,14 @@ inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 
 " Vim keybindings for navigating splits
-nnoremap <C-h> <C-W>h
-nnoremap <C-l> <C-W>l
-nnoremap <C-j> <C-W>j
-nnoremap <C-k> <C-W>k
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+
+" Navigate Tabs
+nnoremap <C-n> :tabnext<CR>
+nnoremap <C-p> :tabprevious<CR>
 
 " SHORTCUTS
 

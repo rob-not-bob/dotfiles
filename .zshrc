@@ -40,6 +40,7 @@ alias .......='cd ../../../../../..'
 
 alias sz='source ~/.zshrc'
 alias ez='vim ~/.zshrc'
+alias ev='vim ~/.vimrc'
 
 alias grep='grep --color=auto'
 
