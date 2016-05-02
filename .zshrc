@@ -94,3 +94,4 @@ zstyle :compinstall filename '/home/ace/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
+source /usr/share/doc/pkgfile/command-not-found.zsh
