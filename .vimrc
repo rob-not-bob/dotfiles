@@ -66,6 +66,8 @@ nnoremap <C-p> :tabprevious<CR>
 " SHORTCUTS
 
 inoremap jk <esc>		" make jk exit visual mode
+vnoremap <C-c> "+y		" Copy to system clipboard
+nnoremap <C-v> "+p		" Paste from system clipboard
 cnoremap <C-p> <Up>
 cnoremap <C-n> <Down>	" Scroll command history with C-p/n instead of up/down
 
