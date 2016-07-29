@@ -1,21 +1,33 @@
-" no beeping
-set visualbell
-
-" command line completion
-set autocomplete
-set wildmode=list:longest,full
-
-" all type pages are opened in new tab
-set newtab=all
-
-" max items to display
-set maxitems=10
-
-" show search pattern matches as typed
-set incsearch
+" VISUALS
 
 colorscheme zenburn
+set! browser.fullscreen.animate=false
 
+" SHORTCUTS
+
+noremap <C-h> gT
+noremap <C-l> gt
+noremap <C-p> :tabmove! -1<CR>
+noremap <C-n> :tabmove! +1<CR>
+noremap <Leader>h :nohlsearch<CR>
+
+" FUNCTIONALITY
+
+" no beeping
+set visualbell		
+" max items to display
+set maxitems=6			
+" all type pages are opened in new tab
+set newtab=all			
+" command line completion
+set autocomplete		
+set wildmode=list:longest,full
+" show search pattern matches as typed
+set incsearch			
+set hlsearch			
+set ignorecase			
+
+" Used for hiding bottombar
 map <silent> <C-F8> :js toggle_bottombar()<CR>
 
 :js << EOF
@@ -27,6 +39,11 @@ function toggle_bottombar() {
   bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
 }
 EOF
+
+
+" PLUGINS
+
+" SMOOZIEE
 
 let g:smooziee_scroll_interval="20"
 let g:smooziee_scroll_amount="100"
