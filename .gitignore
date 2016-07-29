@@ -25,5 +25,7 @@
 !.vimperator
 .vimperator/info
 .vimperator/info/*
+!.vimperator/plugin
+!.vimperator/plugin/*
 !.vimperator/*/*
 .Xresources

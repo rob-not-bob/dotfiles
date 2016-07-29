@@ -27,3 +27,6 @@ function toggle_bottombar() {
   bb.style.overflow = (bb.style.height == '') ? '' : 'hidden';
 }
 EOF
+
+let g:smooziee_scroll_interval="20"
+let g:smooziee_scroll_amount="100"
