@@ -83,6 +83,10 @@ man() {
     man "$@"
 }
 
+function cdl() {
+	cd "$@" && ls;
+}
+
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 export PATH="$JAVA_HOME/bin:/home/ace/.gem/ruby/2.3.0/bin:$PATH"
 source /usr/share/doc/pkgfile/command-not-found.zsh
@@ -95,4 +99,5 @@ zstyle :compinstall filename '/home/ace/.zshrc'
 
 autoload -Uz compinit
 compinit
+
 # End of lines added by compinstall
