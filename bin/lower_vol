@@ -1,0 +1,11 @@
+!#/bin/sh
+
+amixer set Master 5%-
+icon=$VOL_ICON
+
+if [[ $(query_mute) == "true" ]]; then
+	icon=$MUTE_ICON
+fi
+
+notify-no-icon "$icon $(query_vol)"
+update_wallpaper /tmp/wallpaper

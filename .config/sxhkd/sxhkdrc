@@ -56,11 +56,11 @@ super + alt + {h,j,k,l}
 super + alt + {_,shift + }space
 	bspc {node -p cancel,query -N -d | xargs -I id -n 1 bspc node id -p cancel}
 
-alt + ctrl + {h,j,k,l}
-	bspc node -z {left -10 0,bottom 0 10,top 0 -10,right 10 0}
+ctrl + alt + {h,j,k,l}
+	bspc node {@west -r -10,@south -r +10,@north -r -10,@east -r +10}
 
-alt + ctrl + shift + {h,j,k,l}
-	bspc node -z {right -10 0,top 0 10,bottom 0 -10,left 10 0}
+ctrl + alt + shift + {h,j,k,l}
+	bspc node {@east -r -10,@north -r +10,@south -r -10,@west -r +10}
 
 alt + ctrl + {x,y,z}
 	bspc node -g {locked,sticky,private}
@@ -107,17 +107,22 @@ alt + Return
 	fi
 
 alt + space
-	dmenu_run
+	rofi -show run
 
 alt + Escape
 	pkill -USR1 -x sxhkd
 
 super + 1
-	firefox	
+	qutebrowser	
 
 super + 2
 	spotify
 
-super + 3
-	subl3
+super + q
+	notify_info
 
+XF86Audio{Mute,Play,Next,Prev}
+	{toggle_mute,sp play,sp next,sp prev}
+
+XF86Audio{Lower,Raise}Volume
+	{lower,raise}_vol

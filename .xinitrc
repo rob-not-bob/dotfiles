@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. ~/bin/profile
+source ~/bin/profile
 xmodmap ~/.Xmodmap
 xbindkeys
 # Caps lock as esc and as ctrl
@@ -16,4 +16,6 @@ if [ -f ~/.local_machine ]; then
 fi
 
 sxhkd &
+bar_notifyd &
+mpd &
 exec bspwm

@@ -15,7 +15,7 @@ Plugin 'bling/vim-airline'
 
 call vundle#end()
 
-filetype plugin indent on
+"filetype plugin indent on
 
 " END VUNDLE
 
@@ -39,7 +39,7 @@ set number		" show line numbers
 set showcmd		" show command in bottom bar
 set cursorline		" highlight the current line
 
-filetype indent on	" load filetype specific indent files
+"filetype indent on	" load filetype specific indent files
 set wildmenu		" visual autocomplete for command menu
 set lazyredraw		" only redraw screen when we need to
 set showmatch		" highlight matching [{()}]

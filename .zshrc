@@ -1,30 +1,13 @@
-# no need to type cd dir, instead just type the dir
-setopt AUTO_CD
-
-# Pipe to multiple outputs
-setopt MULTIOS
-
-# Wait before doing something to delete everything
-setopt RM_STAR_WAIT
-
-# Disable any beeping
-setopt NO_BEEP
-
-# If we have a glob this will expand it
-setopt GLOB_COMPLETE
-# Case insensitive Globbing
-setopt NO_CASE_GLOB
-# Sort glob results numerically
-setopt NUMERIC_GLOB_SORT
-# Expand the globbing
-setopt EXTENDED_GLOB
-
-# Expand arrays in substitution
-setopt RC_EXPAND_PARAM
-
-# enable vim mode
-bindkey -v
-export KEYTIMEOUT=1 # reduce lag between <ESC> and normal mode to 0.1s
+setopt AUTO_CD				# no need to type cd dir, instead just type the dir
+setopt MULTIOS				# Pipe to multiple outputs
+setopt NO_BEEP				# Disable any beeping
+setopt GLOB_COMPLETE		# If we have a glob this will expand it
+setopt NO_CASE_GLOB			# Case insensitive Globbing
+setopt NUMERIC_GLOB_SORT	# Sort glob results numerically
+setopt EXTENDED_GLOB		# Expand the globbing
+setopt RC_EXPAND_PARAM		# Expand arrays in substitution
+bindkey -v					# enable vim mode
+export KEYTIMEOUT=1			# reduce lag between <ESC> and normal mode to 0.1s
 
 
 # ALIASES
@@ -65,7 +48,11 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 
 # Alt-S inserts sudo at start of line
-insert_sudo() { zle beginning-of-line; zle -U "sudo " }
+insert_sudo() { 
+	zle beginning-of-line
+	BUFFER="sudo $BUFFER";
+	zle end-of-line
+}
 zle -N insert-sudo insert_sudo
 bindkey "^[s" insert-sudo
 
@@ -87,8 +74,6 @@ function cdl() {
 	cd "$@" && ls;
 }
 
-export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
-export PATH="$JAVA_HOME/bin:/home/ace/.gem/ruby/2.3.0/bin:$PATH"
 source /usr/share/doc/pkgfile/command-not-found.zsh
 
 # The following lines were added by compinstall
