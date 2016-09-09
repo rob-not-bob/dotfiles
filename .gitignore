@@ -10,6 +10,8 @@
 !.config/mpd/
 !.config/mpd/mpd.conf
 !.config/compton.conf
+!.config/qutebrowser
+!.config/qutebrowser/*
 !.vimrc
 !.vim/
 !.vim/*
