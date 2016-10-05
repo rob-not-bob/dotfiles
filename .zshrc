@@ -48,13 +48,9 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 
 # Alt-S inserts sudo at start of line
-insert_sudo() { 
-	zle beginning-of-line
-	BUFFER="sudo $BUFFER";
-	zle end-of-line
-}
+insert_sudo() { zle beginning-of-line; BUFFER="sudo $BUFFER"; zle end-of-line; }
 zle -N insert-sudo insert_sudo
-bindkey "^[s" insert-sudo
+bindkey "\es" insert-sudo
 
 PS1='%C → '
 

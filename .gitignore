@@ -30,3 +30,4 @@
 !.vimperator/plugin
 !.vimperator/plugin/*
 !.vimperator/*/*
+!.profile
