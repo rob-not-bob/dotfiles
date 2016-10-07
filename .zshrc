@@ -31,6 +31,7 @@ alias lsr='ls -l ./*(mh-1)'
 
 alias c="xclip -selection clipboard"
 alias p="xclip -o -selection clipboard"
+alias open="xdg-open"
 
 HISTFILE=~/.history
 
@@ -48,9 +49,12 @@ setopt HIST_EXPIRE_DUPS_FIRST
 setopt HIST_FIND_NO_DUPS
 
 # Alt-S inserts sudo at start of line
-insert_sudo() { zle beginning-of-line; BUFFER="sudo $BUFFER"; zle end-of-line; }
-zle -N insert-sudo insert_sudo
-bindkey "\es" insert-sudo
+#insert_sudo() { zle beginning-of-line; BUFFER="sudo $BUFFER"; zle end-of-line; }
+#zle -N insert-sudo insert_sudo
+#bindkey "\es" insert-sudo
+
+bindkey "^K" history-incremental-pattern-search-backward
+bindkey "^J" history-incremental-pattern-search-forward
 
 PS1='%C → '
 
@@ -82,3 +86,12 @@ autoload -Uz compinit
 compinit
 
 # End of lines added by compinstall
+
+# Tells vim mode status at right end of prompt
+#function zle-line-init zle-keymap-select {
+    #RPS1="${${KEYMAP/vicmd/-- NORMAL --}/(main|viins)/-- INSERT --}"
+    #RPS2=$RPS1
+    #zle reset-prompt
+#}
+#zle -N zle-line-init
+#zle -N zle-keymap-select
