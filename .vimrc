@@ -12,6 +12,8 @@ Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
+Plugin 'scrooloose/syntastic'
+Plugin 'tpope/vim-fugitive'
 
 call vundle#end()
 
@@ -109,6 +111,7 @@ set guioptions-=T		" Remove toolbar
 set guioptions-=r		" Remove right scrollbar
 set guioptions-=L		" Remove left scrollbar
 
+
 """""""""""
 " PLUGINS "
 """""""""""
@@ -116,3 +119,17 @@ set guioptions-=L		" Remove left scrollbar
 " CTRL-P
 
 let g:ctrlp_working_path_mode = 'c'
+
+
+" Syntastic (Syntax checking)
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" Fugitive (Git wrapper)
+set statusline+=%{fugitive#statusline()}
