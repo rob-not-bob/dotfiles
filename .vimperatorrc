@@ -5,11 +5,14 @@ set! browser.fullscreen.animate=false
 
 " SHORTCUTS
 
-noremap <C-h> gT
-noremap <C-l> gt
+noremap J		gt
+noremap K		gT
 noremap <C-p> :tabmove! -1<CR>
 noremap <C-n> :tabmove! +1<CR>
 noremap <Leader>h :nohlsearch<CR>
+
+noremap	O		:tabopen 
+noremap o		:open 
 
 " FUNCTIONALITY
 
