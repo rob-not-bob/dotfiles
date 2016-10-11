@@ -15,10 +15,12 @@ URxvt.boldFont: termfont:Bold
 URxvt.italicFont: termfont:Italic
 URxvt.boldItalicFont: termfont:Bold Italic
 
-URxvt.perl-ext-common: default,matcher,vtwheel,resize-font
+URxvt.perl-ext-common: default,matcher,vtwheel,resize-font,clipboard
 URxvt.url-launcher: /usr/bin/firefox
 URxvt.matcher.button: 1
 URxvt.depth: 32
+URxvt.iso14755: False
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
 
 URxvt.resize-font.smaller: C-Down
 URxvt.resize-font.bigger: C-Up
