@@ -34,6 +34,8 @@ set shiftwidth=4	" auto indent number of visual spaces per tab
 set softtabstop=4 	" number of spaces in tab when editing
 set autoindent		" auto indents
 set noexpandtab		" insert tabs instead of spaces when indenting
+autocmd FileType ruby setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript setlocal ts=4 sts=4 sw=4
 
 " UI CONFIG
 
