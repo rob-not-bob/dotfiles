@@ -2,7 +2,6 @@
 
 source ~/bin/profile
 xmodmap ~/.Xmodmap
-xbindkeys
 # Caps lock as esc and as ctrl
 setxkbmap -option 'caps:ctrl_modifier'
 xcape -e 'Caps_Lock=Escape'

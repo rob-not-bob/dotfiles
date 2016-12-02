@@ -1,0 +1,19 @@
+#!/bin/sh
+
+bat=$(acpi -b | awk -F, '{ print $2 }' | tr -d ' ' | tr -d %)
+
+b_icon=""
+
+if [ $bat -gt 85 ]; then
+	b_icon=$B_FULL_ICON
+elif [ $bat -gt 60 ]; then
+	b_icon=$B_MOST_ICON
+elif [ $bat -gt 35 ]; then
+	b_icon=$B_HALF_ICON
+elif [ $bat -gt 9 ]; then
+	b_icon=$B_LESS_ICON
+else
+	b_icon=$B_EMPTY_ICON
+fi
+
+echo $b_icon
