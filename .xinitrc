@@ -1,5 +1,6 @@
 #!/bin/sh
 
+source ~/.profile
 source ~/bin/profile
 xmodmap ~/.Xmodmap
 # Caps lock as esc and as ctrl

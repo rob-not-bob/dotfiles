@@ -76,8 +76,6 @@ function cdl() {
 	cd "$@" && ls;
 }
 
-source /usr/share/doc/pkgfile/command-not-found.zsh
-
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _expand _complete _ignored

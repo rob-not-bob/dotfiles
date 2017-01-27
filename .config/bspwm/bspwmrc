@@ -25,11 +25,6 @@ fi
 export BSPWM_DESKTOP_WALL_WIDTH=2
 export BSPWM_DESKTOP_WALL_HEIGHT=2
 
-# Android
-bspc rule -a Genymotion desktop=^6
-bspc rule -a "Genymotion Player" desktop=^6
-bspc rule -a jetbrains-studio desktop=^5
-
 wmname LG3D # Helps load some GUI Java programs
 xdotool behave_screen_edge --quiesce 600 -delay 0 top-right exec vin/notify_info &
 compton --config ~/.config/compton.conf -b
