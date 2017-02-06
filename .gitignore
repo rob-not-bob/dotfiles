@@ -15,10 +15,6 @@
 !.vimrc
 !.vim/
 .vim/*
-!.vim/bundle
-.vim/bundle/*
-!.vim/bundle/Vundle.vim
-!.vim/bundle/Vundle.vim/*
 !.zshrc
 !.xinitrc
 !.Xresources
