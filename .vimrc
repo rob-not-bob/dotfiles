@@ -36,11 +36,14 @@ set autoindent		" auto indents
 set noexpandtab		" insert tabs instead of spaces when indenting
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=4 sts=4 sw=4
+autocmd FileType yml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
 
 " UI CONFIG
 
-set number		" show line numbers
-set showcmd		" show command in bottom bar
+set number			" show line numbers
+set relativenumber	" set relative line numbers
+set showcmd			" show command in bottom bar
 set cursorline		" highlight the current line
 
 "filetype indent on	" load filetype specific indent files
