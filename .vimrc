@@ -12,6 +12,7 @@ Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 
@@ -135,6 +136,19 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs = 1
 
 " Fugitive (Git wrapper)
 set statusline+=%{fugitive#statusline()}
+
+" Vim-Airline
+
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+function! AirlineOverride(...)
+	call a:l.add_section('StatusLine', 'all')
+	call a:l.split()
+	call a:l.add_section('Error', '%p%%')
+endfunction
