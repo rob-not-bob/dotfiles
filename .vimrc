@@ -15,6 +15,9 @@ Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
+Plugin 'pangloss/vim-javascript'
 
 call vundle#end()
 
@@ -152,3 +155,9 @@ function! AirlineOverride(...)
 	call a:l.split()
 	call a:l.add_section('Error', '%p%%')
 endfunction
+
+" Vim Javascript
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+
