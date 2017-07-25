@@ -22,11 +22,6 @@
 !.fehbg
 !bin
 !bin/*
-!.vimperatorrc
-!.vimperator
-.vimperator/info
-.vimperator/info/*
-!.vimperator/plugin
-!.vimperator/plugin/*
-!.vimperator/*/*
+!pictures
+!pictures/JnTdj4w.jpg
 !.profile

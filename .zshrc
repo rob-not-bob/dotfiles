@@ -13,6 +13,7 @@ export KEYTIMEOUT=1			# reduce lag between <ESC> and normal mode to 0.1s
 # ALIASES
 
 alias ls='ls --color'
+alias ll='ls -la'
 
 alias ..='cd ..'
 alias ...='cd ../..'

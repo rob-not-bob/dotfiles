@@ -8,12 +8,16 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mattn/emmet-vim'
 Plugin 'bling/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-surround'
+Plugin 'pangloss/vim-javascript'
 
 call vundle#end()
 
@@ -36,11 +40,14 @@ set autoindent		" auto indents
 set noexpandtab		" insert tabs instead of spaces when indenting
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
 autocmd FileType javascript setlocal ts=4 sts=4 sw=4
+autocmd FileType yml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
 
 " UI CONFIG
 
-set number		" show line numbers
-set showcmd		" show command in bottom bar
+set number			" show line numbers
+set relativenumber	" set relative line numbers
+set showcmd			" show command in bottom bar
 set cursorline		" highlight the current line
 
 "filetype indent on	" load filetype specific indent files
@@ -132,6 +139,25 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs = 1
 
 " Fugitive (Git wrapper)
 set statusline+=%{fugitive#statusline()}
+
+" Vim-Airline
+
+set laststatus=2
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+function! AirlineOverride(...)
+	call a:l.add_section('StatusLine', 'all')
+	call a:l.split()
+	call a:l.add_section('Error', '%p%%')
+endfunction
+
+" Vim Javascript
+
+let g:javascript_plugin_jsdoc = 1
+let g:javascript_plugin_flow = 1
+
