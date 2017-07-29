@@ -68,7 +68,7 @@ alt + ctrl + {x,y,z}
 
 super + alt + {1-9}
 	bspc node -o 0.{1-9}; \
-	bspc node -p east
+	bspc node -p west
 
 alt + {1-9}
 	bspc desktop -f ^{1-9}
