@@ -1,6 +1,8 @@
 *
 
 !.gitignore
+!.gitconfig
+!.eslintrc.js
 !.config/
 .config/*
 !.config/bspwm/

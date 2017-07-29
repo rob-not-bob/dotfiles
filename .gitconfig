@@ -7,8 +7,9 @@
 	enabled = true
 [alias]
 	s = status -sb
+	a = add
 	lg = log --oneline --decorate --all --graph
-	cm = commit
+	cm = commit -m 
 	st = status
 	br = branch
 	co = checkout
