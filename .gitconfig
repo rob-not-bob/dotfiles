@@ -1,0 +1,23 @@
+[user]
+	email = robby.kirby@gmail.com
+	name = Robert Allen
+[pull]
+	rebase = true
+[rerere]
+	enabled = true
+[alias]
+	s = status -sb
+	lg = log --oneline --decorate --all --graph
+	cm = commit
+	st = status
+	br = branch
+	co = checkout
+	mg = merge
+	cam = commit -am
+	cl = clone
+	pl = pull
+	ps = push
+[core]
+	autocrlf = input
+[format]
+  pretty = "%H %ci %ce %ae %d %s"
