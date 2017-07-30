@@ -20,5 +20,6 @@
 	ps = push
 [core]
 	autocrlf = input
+	excludesfile = /home/ace/.gitignore_global
 [format]
   pretty = "%H %ci %ce %ae %d %s"

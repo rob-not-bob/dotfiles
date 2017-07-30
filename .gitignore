@@ -2,6 +2,7 @@
 
 !.gitignore
 !.gitconfig
+!.gitignore_global
 !.eslintrc.js
 !.config/
 .config/*
@@ -14,6 +15,9 @@
 !.config/compton.conf
 !.config/qutebrowser
 !.config/qutebrowser/*
+!.config/Code
+!.config/Code/User
+!.config/Code/User/settings.json
 !.vimrc
 !.vim/
 .vim/*

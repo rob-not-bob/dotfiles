@@ -1,0 +1,85 @@
+{
+    "workbench.colorTheme": "Gruvbox Dark (Medium)",
+    "vim.disableAnnoyingNeovimMessage": true,
+    "vim.searchHighlightColor": "rgba(254, 128, 25, 0.3)",
+    "vim.useSystemClipboard": true,
+    "vim.hlsearch": true,
+    "vim.useCtrlKeys": true,
+    "vim.easymotion": true,
+    "vim.easymotionMarkerBackgroundColor": "#282828",
+    "vim.easymotionMarkerForegroundColorOneChar": "#fe8019",
+    "vim.easymotionMarkerForegroundColorTwoChar": "#fe8019",
+    "vim.insertModeKeyBindingsNonRecursive": [],
+    "vim.otherModesKeyBindingsNonRecursive": [
+        {
+            "before": ["leader", "h"],
+            "after": [],
+            "commands": [
+                {
+                    "command": ":nohl",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before": ["<C-n>"],
+            "after": [],
+            "commands": [
+                {
+                    "command": ":tabnext",
+                    "args": []
+                }
+            ]
+        }
+    ],
+    "workbench.colorCustomizations": {
+        "selection.background": "#f2e5bc",
+        "input.foreground": "#ebdbb2",
+        "input.placeholderForeground": "#ae9984",
+        "editorLineNumber.foreground": "#928374",
+        "editorWarning.foreground": "#b57614",
+        "editorError.foreground": "#cc241d",
+        "editorWidget.background": "#282828",
+        "editorGutter.modifiedBackground": "#b57614",
+        "editorGutter.addedBackground": "#79740e",
+        "editorGutter.deletedBackground": "#9d0006",
+        "editor.foreground": "#ebdbb2",
+        "activityBar.background": "#32302f",
+        "activityBar.foreground": "#ebdbb2",
+        "activityBarBadge.background": "#b16286",
+        "activityBarBadge.foreground": "#ebdbb2",
+        "sideBar.background": "#32302f",
+        "sideBar.foreground": "#ebdbb2",
+        "tab.activeForeground": "#ebdbb2",
+        "tab.inactiveForeground": "#ae9984",
+        "tab.unfocusedInactiveForeground": "#ae9984",
+        "badge.foreground": "#ae9984",
+        "panelTitle.activeForeground": "#ebdbb2",
+        "statusBar.background": "#3C3836",
+        "statusBar.foreground": "#ebdbb2",
+        "statusBar.noFolderBackground": "#3c3836",
+        "statusBar.noFolderForeground": "#ebdbb2",
+        "statusBar.debuggingBackground": "#3c3836",
+        "statusBar.debuggingForeground": "#ebdbb2",
+        "dropdown.foreground": "#ebdbb2",
+        "terminal.foreground": "#ebdbb2",
+        "terminal.background": "#282828",
+        "terminal.ansiBlack": "#282828",
+        "terminal.ansiBrightBlack": "#928374",
+        "terminal.ansiRed": "#cc241d",
+        "terminal.ansiBrightRed": "#fb4943",
+        "terminal.ansiGreen": "#98971a",
+        "terminal.ansiBrightGreen": "#b8bb26",
+        "terminal.ansiYellow": "#d79921",
+        "terminal.ansiBrightYellow": "#fabd2f",
+        "terminal.ansiBrightBlue": "#83a598",
+        "terminal.ansiBlue": "#438488",
+        "terminal.ansiMagenta": "#b16286",
+        "terminal.ansiBrightMagenta": "#d3869b",
+        "terminal.ansiCyan": "#689d6a",
+        "terminal.ansiBrightCyan": "#8ec07c",
+        "terminal.ansiWhite": "#a89984",
+        "terminal.ansiBrightWhite": "#ebdbb2"
+    },
+    "workbench.iconTheme": "material-icon-theme"
+}
