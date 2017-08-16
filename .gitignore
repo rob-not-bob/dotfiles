@@ -4,6 +4,7 @@
 !.gitconfig
 !.gitignore_global
 !.eslintrc.js
+!.install.sh
 !.config/
 .config/*
 !.config/bspwm/
