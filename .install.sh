@@ -40,106 +40,88 @@ if [[ $EUID -eq 0 ]]; then
 	exit 0
 fi
 
-echo "Installing dotfiles..."
-git clone https://github.com/th3ac3/dotfiles.git ~/dotfiles
-mv ~/dotfiles/.* ~
-mv ~/dotfiles/* ~
-rm -rf ~/dotfiles
+# Dotfiles
+if ! [ -d "/home/ace/bin" ]; then
+	echo "Installing dotfiles..."
+	git clone https://github.com/th3ac3/dotfiles.git ~/dotfiles
+	mv ~/dotfiles/.* ~
+	mv ~/dotfiles/* ~
+	rm -rf ~/dotfiles
+fi
 
+# Pacaur
+if ! type "pacaur" > /dev/null; then
+	echo "Installing pacaur..."
 
-# Get pacaur installed
-echo "Installing pacaur..."
+	git clone https://aur.archlinux.org/cower.git ~/cower
+	git clone https://aur.archlinux.org/pacaur.git ~/pacaur
 
-git clone https://aur.archlinux.org/cower.git ~/cower
-git clone https://aur.archlinux.org/pacaur.git ~/pacaur
+	cd ~/cower
+	makepkg -sri --noconfirm
 
-cd ~/cower
-makepkg -sri
+	cd ~/pacaur
+	makepkg -sri --noconfirm
 
-cd ~/pacaur
-makepkg -sri
+	rm -rf ~/pacaur ~/cower
+fi
 
-rm -rf ~/pacaur ~/cower
+if ! type "bspwm" > /dev/null; then
+	echo "Installing packages..."
+	pacaur -S \
+	vim \
 
-echo "Installing packages..."
-pacaur -S \
-vim \
-linux-headers \
-xorg-server \
-xorg-xinit \
-xorg-xmodmap \
-xorg-setxkbmap \
-xorg-xset \
-xorg-xrdb \
-xorg-xrandr \
-xcape \
-xdotool \
-bspwm \
-sxhkd \
-feh \
-lemonbar-xft-git \
-wmname \
-rxvt-unicode \
-ttf-font-awesome \
-ttf-anonymice-powerline-git \
-ttf-dejavu \
-rofi-git \
-nautilus \
-evince \
-spotify \
-alsa-utils \
-mpd \
-firefox \
-slim \
-dropbox \
-visual-studio-code
+	xorg-server \
+	xorg-xinit \
+	xorg-xmodmap \
+	xorg-setxkbmap \
+	xorg-xset \
+	xorg-xrdb \
+	xorg-xrandr \
+	xcape \
+	xdotool \
+	bspwm \
+	sxhkd \
+	feh \
+	lemonbar-xft-git \
+	wmname \
+	rxvt-unicode \
+	ttf-font-awesome \
+	ttf-anonymice-powerline-git \
+	ttf-dejavu \
+	rofi-git \
+	nautilus \
+	evince \
+	spotify \
+	alsa-utils \
+	mpd \
+	firefox \
+	slim \
+	dropbox \
+	visual-studio-code
+fi
 
-# Vim setup
-
-echo "Vim setup..."
-mkdir -p ~/.vim/bundle
-git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-vim +PluginInstall +qall
-
-
-# Monitor setup
-
-echo "Setting up monitor..."
-echo "Enter monitor width: "
-read WIDTH
-echo "Enter monitor height: "
-read HEIGHT
-echo "Enter monitor refreshrate: "
-read HZ
-
-modeline=$(cvt $WIDTH $HEIGHT $HZ | tail -n 1)
-modeline_name=$(echo $modeline | awk '{print $2}')
-echo "$modeline"
-identifier=$(xrandr | grep "primary" | awk '{print $1}')
-echo "Identifier: $identifier"
-
-CONF_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
-echo 'Section "Monitor"' >> $CONF_PATH
-echo "	Identifier \"$identifier\"" >> $CONF_PATH
-echo "	$modeline" >> $CONF_PATH
-echo "	Option \"PreferredMode\" $modeline_name" >> $CONF_PATH
-echo "EndSection" >> $CONF_PATH
-
+# Vim 
+if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ]; then
+	echo "Vim setup..."
+	mkdir -p ~/.vim/bundle
+	git clone https://github.com/VundleVim/Vundle.vim.git /home/ace/.vim/bundle/Vundle.vim
+	vim +PluginInstall +qall
+fi
 
 # Slim login manager setup
+if ! systemctl is-enabled slim &> /dev/null; then
+	echo "Slim setup..."
+	SLIM_CONF="/etc/slim.conf"
 
-echo "Slim setup..."
-SLIM_CONF="/etc/slim.conf"
-
-sudo sed -i "s/#focus_password.*/focus_password	yes/" $SLIM_CONF
-sudo sed -i "s/#default_user.*/default_user	ace/" $SLIM_CONF
-sudo sed -i "s/welcome_msg/#welcome_msg/" $SLIM_CONF
-sudo cp ~/pictures/6qZqX.jpg /usr/share/slim/themes/default/background.jpg
-sudo systemctl enable slim
+	sudo sed -i "s/#focus_password.*/focus_password	yes/" $SLIM_CONF
+	sudo sed -i "s/#default_user.*/default_user	ace/" $SLIM_CONF
+	sudo sed -i "s/welcome_msg/#welcome_msg/" $SLIM_CONF
+	sudo cp ~/pictures/6qZqX.jpg /usr/share/slim/themes/default/background.jpg
+	sudo systemctl enable slim
+fi
 
 # Virtual Machine guest setup
-
-if [[ "$1" -eq "vmware" ]]; then
+if [[ "$1" = "vmware" ]]; then
 	echo "VMWare Setup..."
 	pacaur -S xf86-input-vmmouse xf86-video-vmware open-vm-tools open-vm-tools-dkms xf86-video-vesa xf86-video-fbdev
 	sudo systemctl enable vmware-vmblock-fuse
@@ -150,12 +132,54 @@ if [[ "$1" -eq "vmware" ]]; then
 	echo "vmware-user-suid-wrapper" >> ~/.local_machine
 fi
 
-if [[ "$1" -eq "vbox" ]]; then
+if [[ "$1" = "vbox" ]]; then
 	echo "Virtualbox setup..."
+	pacaur -S virtualbox-guest-modules-arch
+	pacaur -S virtualbox-guest-utils
+	sudo systemctl enable vboxservice
+	touch ~/.local_machine
+	chmod +x ~/.local_machine
+	echo "VBoxClient-all" >> ~/.local_machine
 fi
 
-# Setup dropbox
+if ! xrandr &> /dev/null; then
+	echo "DONE! Simply run the script one more time after rebooting and logging in graphically"
+	exit 0
+fi
 
-echo "Dropbox Setup..."
-dropbox & # Will prompt the user for login info for dropbox
+# Monitor setup
+CONF_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
+if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
+	echo "Setting up monitor..."
+	echo "Enter monitor width: "
+	read WIDTH
+	echo "Enter monitor height: "
+	read HEIGHT
+	echo "Enter monitor refreshrate: "
+	read HZ
+
+	# Create modeline and get monitor identifier
+	modeline=$(cvt $WIDTH $HEIGHT $HZ | tail -n 1)
+	modeline_value=$(echo $modeline | sed "s/Modeline //")
+	modeline_name=$(echo $modeline | awk '{print $2}')
+	identifier=$(xrandr | grep "primary" | awk '{print $1}')
+
+	echo "$modeline"
+	echo "Identifier: $identifier"
+
+	# Set a conf file to permanently store the changes
+	echo 'Section "Monitor"' | sudo tee -a $CONF_PATH
+	echo "	Identifier \"$identifier\"" | sudo tee -a $CONF_PATH
+	echo "	$modeline" | sudo tee -a $CONF_PATH
+	echo "	Option \"PreferredMode\" $modeline_name" | sudo tee -a $CONF_PATH
+	echo "EndSection" | sudo tee -a $CONF_PATH
+
+	# Apply the changes
+	echo "xrandr --newmode $modeline_value" | bash -
+	echo "xrandr --addmode $identifier $modeline_name" | bash -
+	echo "xrandr --output $identifier --mode $modeline_name" | bash -
+	~/.fehbg
+
+	dropbox &
+fi
 
