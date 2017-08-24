@@ -15,10 +15,11 @@ if [[ $EUID -eq 0 ]]; then
 	systemctl start dhcpcd
 	systemctl enable dhcpcd
 
-	pacman -S grub git zsh
+	pacman -S grub git zsh --noconfirm
 	echo "Enter the disk to install grub to: "
 	read DISK
 	grub-install --target=i386-pc $DISK
+	sed -i "s/GRUB_TIMEOUT=.*/GRUB_TIMEOUT=0/" /etc/default/grub
 	grub-mkconfig -o /boot/grub/grub.cfg
 
 	echo "Creating user ace..."
@@ -50,7 +51,7 @@ if ! [ -d "/home/ace/bin" ]; then
 fi
 
 # Pacaur
-if ! type "pacaur" > /dev/null; then
+if ! type "pacaur" &> /dev/null; then
 	echo "Installing pacaur..."
 
 	git clone https://aur.archlinux.org/cower.git ~/cower
@@ -67,9 +68,8 @@ fi
 
 if ! type "bspwm" > /dev/null; then
 	echo "Installing packages..."
-	pacaur -S \
+	pacaur -S --noedit --noconfirm \
 	vim \
-
 	xorg-server \
 	xorg-xinit \
 	xorg-xmodmap \
@@ -83,6 +83,7 @@ if ! type "bspwm" > /dev/null; then
 	sxhkd \
 	feh \
 	lemonbar-xft-git \
+	compton \
 	wmname \
 	rxvt-unicode \
 	ttf-font-awesome \
@@ -123,7 +124,7 @@ fi
 # Virtual Machine guest setup
 if [[ "$1" = "vmware" ]]; then
 	echo "VMWare Setup..."
-	pacaur -S xf86-input-vmmouse xf86-video-vmware open-vm-tools open-vm-tools-dkms xf86-video-vesa xf86-video-fbdev
+	pacaur -S --noconfirm xf86-input-vmmouse xf86-video-vmware open-vm-tools open-vm-tools-dkms xf86-video-vesa xf86-video-fbdev
 	sudo systemctl enable vmware-vmblock-fuse
 	sudo systemctl enable vmtoolsd
 	sudo systemctl start vmtoolsd
@@ -134,8 +135,8 @@ fi
 
 if [[ "$1" = "vbox" ]]; then
 	echo "Virtualbox setup..."
-	pacaur -S virtualbox-guest-modules-arch
-	pacaur -S virtualbox-guest-utils
+	pacaur -S --noconfirm virtualbox-guest-modules-arch
+	pacaur -S --noconfirm virtualbox-guest-utils
 	sudo systemctl enable vboxservice
 	touch ~/.local_machine
 	chmod +x ~/.local_machine
@@ -180,6 +181,10 @@ if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
 	echo "xrandr --output $identifier --mode $modeline_name" | bash -
 	~/.fehbg
 
-	dropbox &
+	firefox "about:accounts?action=signin&entrypoint=menupanel" &
+	pkill dropbox
+	echo "Linking to dropbox... You can exit this once you've signed in"
+	dropbox
+	echo "Finished!"
 fi
 
