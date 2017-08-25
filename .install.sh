@@ -10,9 +10,9 @@ if [ $EUID -eq 0 ] && [ "$1" = "new" ]; then
 	echo "Enter the size of the swap partition (ex 4G): "
 	read SWAP_SIZE
 	echo "The rest of the space will be used for /"
-	exit 0
 
 	(
+		echo o # New partition table
 		echo n # New partion
 		echo p # primary
 		echo 1 # partition number 1
@@ -101,9 +101,12 @@ fi
 if ! [ -d "/home/ace/bin" ]; then
 	echo "Installing dotfiles..."
 	git clone https://github.com/th3ac3/dotfiles.git ~/dotfiles
+
+	# Move dotfiles to home dir
 	shopt -s dotglob nullglob
 	mv ~/dotfiles/* ~
 	rm -rf ~/dotfiles
+	git remote set-url origin git@github.com:th3ac3/dotfiles.git
 fi
 
 # Pacaur
@@ -135,6 +138,7 @@ if ! type "bspwm" > /dev/null; then
 	xorg-xset \
 	xorg-xrdb \
 	xorg-xrandr \
+	xclip \
 	xcape \
 	xdotool \
 	bspwm \
@@ -157,6 +161,8 @@ if ! type "bspwm" > /dev/null; then
 	slim \
 	dropbox \
 	visual-studio-code
+
+	ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa # Create ssh key for github
 fi
 
 # Vim 
@@ -187,6 +193,7 @@ if [[ "$1" = "vmware" ]]; then
 
 	sudo systemctl enable vmware-vmblock-fuse
 	sudo systemctl enable vmtoolsd
+	sudo systemctl start vmware-vmblock-fuse
 	sudo systemctl start vmtoolsd
 
 	touch ~/.local_machine
@@ -201,6 +208,7 @@ if [[ "$1" = "vbox" ]]; then
 	pacaur -S --noconfirm virtualbox-guest-utils
 
 	sudo systemctl enable vboxservice
+	sudo systemctl start vboxservice
 
 	touch ~/.local_machine
 	chmod +x ~/.local_machine
@@ -208,8 +216,11 @@ if [[ "$1" = "vbox" ]]; then
 fi
 
 if ! xrandr &> /dev/null; then
-	echo "DONE! Simply run the script one more time after rebooting and logging in graphically"
+	# Add line to bspwmrc to start our install script once rebooted grahpically
+	echo "urxvt -e zsh -c \"~/.install.sh; zsh\"" >> ~/.config/bspwm/bspwmrc
 
+	# Start the xserver
+	startx
 	exit 0
 fi
 
@@ -233,7 +244,7 @@ if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
 	echo "$modeline"
 	echo "Identifier: $identifier"
 
-	# Set a conf file to permanently store the changes
+	# Set a conf file to permanently store the monitor dimensions
 	echo 'Section "Monitor"' | sudo tee -a $CONF_PATH
 	echo "	Identifier \"$identifier\"" | sudo tee -a $CONF_PATH
 	echo "	$modeline" | sudo tee -a $CONF_PATH
@@ -246,10 +257,17 @@ if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
 	echo "xrandr --output $identifier --mode $modeline_name" | bash -
 	~/.fehbg
 
-	firefox "about:accounts?action=signin&entrypoint=menupanel" &
-	pkill dropbox
+	LAST_LINE=$(tail -n 1 ~/.config/bspwm/bspwmrc)
+	if [[ "$LAST_LINE" == urxvt* ]]; then # If line begins with urxvt
+		head -n -1 ~/.config/bspwm/bspwmrc > ~/.config/bspwm/bspwmrc # Remove added line from bspwmrc
+	fi
+
+	xclip -sel clip < ~/.ssh/id_rsa.pub # Copy our public rsakey to clipboard to add to github
+	# Open sign in for accounts
+	firefox "about:accounts?action=signin&entrypoint=menupanel" https://gmail.com https://github.com/settings/keys &
 	echo "Linking to dropbox... You can exit this once you've signed in"
 	dropbox
 	echo "Finished!"
+	exit 0
 fi
 
