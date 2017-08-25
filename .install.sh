@@ -169,6 +169,7 @@ fi
 if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ]; then
 	echo "Vim setup..."
 	mkdir -p ~/.vim/bundle
+	vim +qall
 	git clone https://github.com/VundleVim/Vundle.vim.git /home/ace/.vim/bundle/Vundle.vim
 	vim +PluginInstall +qall
 fi
