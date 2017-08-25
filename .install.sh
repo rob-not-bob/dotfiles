@@ -1,4 +1,58 @@
-#!/bin/sh
+#!/usr/bin/bash
+
+# Partion and format disks as well as install linux
+if [ $EUID -eq 0 ] && [ "$1" = "new" ]; then
+	echo "Partitioning disk..."
+	echo "Enter the disk to partion: "
+	read DISK
+	echo "Enter the size of the boot partition (ex 1G): "
+	read BOOT_SIZE
+	echo "Enter the size of the swap partition (ex 4G): "
+	read SWAP_SIZE
+	echo "The rest of the space will be used for /"
+	exit 0
+
+	(
+		echo n # New partion
+		echo p # primary
+		echo 1 # partition number 1
+		echo # default - start at begginning of disk
+		echo +$BOOT_SIZE # allocate space for boot partition
+		echo n
+		echo p
+		echo 2
+		echo # default, start immediately after boot
+		echo +$SWAP_SIZE # allocate space for swap
+		echo n
+		echo p
+		echo 3
+		echo # default, start after swap
+		echo # default, extend to end of disk
+		echo a # make a partition bootable
+		echo 1 # set partition one with boot flag
+		echo w # write the partion table
+		echo q # finish
+	) | fdisk $DISK
+
+	mkfs.ext4 "$DISK""1" # Make boot ext4
+	mkfs.ext4 "$DISK""3" # Make root ext4
+	mkswap "$DISK""2" # Make swap swap
+
+	swapon "$DISK""2"
+	mount "$DISK""3" /mnt
+	mkdir /mnt/boot
+	mount "$DISK""1" /mnt/boot
+
+	pacstrap /mnt base base-devel # Install linux
+
+	genfstab -U /mnt >> /mnt/etc/fstab # Create the fstab file
+
+	cp ./.install.sh /mnt/root # Copy and run the script on newly created system
+	arch-chroot /mnt /root/.install.sh
+
+	reboot
+	exit 0
+fi
 
 # Root user setup
 if [[ $EUID -eq 0 ]]; then
@@ -36,7 +90,9 @@ if [[ $EUID -eq 0 ]]; then
 	mv ~/.install.sh ~ace
 	chown ace:ace ~ace/.install.sh
 
-	echo "DONE! Login as ace and run ~/.install.sh to finish installation."
+	echo "DONE! After reboot login as ace and run ~/.install.sh to finish installation"
+	echo "Rebooting in 5s..."
+	sleep 5s
 
 	exit 0
 fi
@@ -45,7 +101,7 @@ fi
 if ! [ -d "/home/ace/bin" ]; then
 	echo "Installing dotfiles..."
 	git clone https://github.com/th3ac3/dotfiles.git ~/dotfiles
-	mv ~/dotfiles/.* ~
+	shopt -s dotglob nullglob
 	mv ~/dotfiles/* ~
 	rm -rf ~/dotfiles
 fi
@@ -68,8 +124,10 @@ fi
 
 if ! type "bspwm" > /dev/null; then
 	echo "Installing packages..."
+
 	pacaur -S --noedit --noconfirm \
 	vim \
+	openssh \
 	xorg-server \
 	xorg-xinit \
 	xorg-xmodmap \
@@ -124,10 +182,13 @@ fi
 # Virtual Machine guest setup
 if [[ "$1" = "vmware" ]]; then
 	echo "VMWare Setup..."
+
 	pacaur -S --noconfirm xf86-input-vmmouse xf86-video-vmware open-vm-tools open-vm-tools-dkms xf86-video-vesa xf86-video-fbdev
+
 	sudo systemctl enable vmware-vmblock-fuse
 	sudo systemctl enable vmtoolsd
 	sudo systemctl start vmtoolsd
+
 	touch ~/.local_machine
 	chmod +x ~/.local_machine
 	echo "vmware-user-suid-wrapper" >> ~/.local_machine
@@ -135,9 +196,12 @@ fi
 
 if [[ "$1" = "vbox" ]]; then
 	echo "Virtualbox setup..."
+
 	pacaur -S --noconfirm virtualbox-guest-modules-arch
 	pacaur -S --noconfirm virtualbox-guest-utils
+
 	sudo systemctl enable vboxservice
+
 	touch ~/.local_machine
 	chmod +x ~/.local_machine
 	echo "VBoxClient-all" >> ~/.local_machine
@@ -145,6 +209,7 @@ fi
 
 if ! xrandr &> /dev/null; then
 	echo "DONE! Simply run the script one more time after rebooting and logging in graphically"
+
 	exit 0
 fi
 
