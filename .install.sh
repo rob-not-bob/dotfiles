@@ -1,3 +1,4 @@
+#
 #!/usr/bin/bash
 
 # Partion and format disks as well as install linux
@@ -98,7 +99,7 @@ if [[ $EUID -eq 0 ]]; then
 fi
 
 # Dotfiles
-if ! [ -d "/home/ace/bin" ]; then
+if ! [ -d "/home/ace/bin" ] || [ "$1" = "dotfiles" ]; then
 	echo "Installing dotfiles..."
 	git clone https://github.com/th3ac3/dotfiles.git ~/dotfiles
 
@@ -110,24 +111,25 @@ if ! [ -d "/home/ace/bin" ]; then
 fi
 
 # Pacaur
-if ! type "pacaur" &> /dev/null; then
+if ! [ type "pacaur" &> /dev/null ] || [ "$1" = "pacaur" ]; then
 	echo "Installing pacaur..."
 
 	git clone https://aur.archlinux.org/cower.git ~/cower
 	git clone https://aur.archlinux.org/pacaur.git ~/pacaur
 
 	cd ~/cower
-	makepkg -sri --noconfirm
+	makepkg -sri --noconfirm --skippgpcheck
 
 	cd ~/pacaur
-	makepkg -sri --noconfirm
+	makepkg -sri --noconfirm --skippgpcheck
 
 	rm -rf ~/pacaur ~/cower
 fi
 
-if ! type "bspwm" > /dev/null; then
+if ! [ type "bspwm" > /dev/null ] || [ "$1" = "packages" ]; then
 	echo "Installing packages..."
 
+	pacaur -S --noedit --noconfirm archlinux-keyring
 	pacaur -S --noedit --noconfirm \
 	vim \
 	openssh \
@@ -166,7 +168,7 @@ if ! type "bspwm" > /dev/null; then
 fi
 
 # Vim 
-if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ]; then
+if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ] || [ "$1" = "vim" ]; then
 	echo "Vim setup..."
 	mkdir -p ~/.vim/bundle
 	vim +qall
@@ -175,7 +177,7 @@ if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ]; then
 fi
 
 # Slim login manager setup
-if ! systemctl is-enabled slim &> /dev/null; then
+if ! [ systemctl is-enabled slim &> /dev/null ] || [ "$1" = "slim" ]; then
 	echo "Slim setup..."
 	SLIM_CONF="/etc/slim.conf"
 
@@ -190,7 +192,13 @@ fi
 if [[ "$1" = "vmware" ]]; then
 	echo "VMWare Setup..."
 
-	pacaur -S --noconfirm xf86-input-vmmouse xf86-video-vmware open-vm-tools open-vm-tools-dkms xf86-video-vesa xf86-video-fbdev
+	pacaur -S --noedit --noconfirm \
+		xf86-input-vmmouse \
+		xf86-video-vmware \
+		open-vm-tools \
+		open-vm-tools-dkms \
+		xf86-video-vesa \
+		xf86-video-fbdev
 
 	sudo systemctl enable vmware-vmblock-fuse
 	sudo systemctl enable vmtoolsd
@@ -205,8 +213,8 @@ fi
 if [[ "$1" = "vbox" ]]; then
 	echo "Virtualbox setup..."
 
-	pacaur -S --noconfirm virtualbox-guest-modules-arch
-	pacaur -S --noconfirm virtualbox-guest-utils
+	pacaur -S --noedit --noconfirm virtualbox-guest-modules-arch
+	pacaur -S --noedit --noconfirm virtualbox-guest-utils
 
 	sudo systemctl enable vboxservice
 	sudo systemctl start vboxservice
@@ -216,7 +224,7 @@ if [[ "$1" = "vbox" ]]; then
 	echo "VBoxClient-all" >> ~/.local_machine
 fi
 
-if ! xrandr &> /dev/null; then
+if ! [ xrandr &> /dev/null ]; then
 	# Add line to bspwmrc to start our install script once rebooted grahpically
 	echo "urxvt -e zsh -c \"~/.install.sh; zsh\"" >> ~/.config/bspwm/bspwmrc
 
@@ -225,9 +233,14 @@ if ! xrandr &> /dev/null; then
 	exit 0
 fi
 
-# Monitor setup
+# Graphical setup
 CONF_PATH="/etc/X11/xorg.conf.d/10-monitor.conf"
-if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
+if [ xrandr ] && ! [ -f "$CONF_PATH" ] || [ "$1" = "graphical" ]; then
+	LAST_LINE=$(tail -n 1 ~/.config/bspwm/bspwmrc)
+	if [[ "$LAST_LINE" == urxvt* ]]; then # If line begins with urxvt
+		head -n -1 ~/.config/bspwm/bspwmrc > ~/.config/bspwm/bspwmrc # Remove added line from bspwmrc
+	fi
+
 	echo "Setting up monitor..."
 	echo "Enter monitor width: "
 	read WIDTH
@@ -257,11 +270,6 @@ if [ xrandr ] && ! [ -f "$CONF_PATH" ]; then
 	echo "xrandr --addmode $identifier $modeline_name" | bash -
 	echo "xrandr --output $identifier --mode $modeline_name" | bash -
 	~/.fehbg
-
-	LAST_LINE=$(tail -n 1 ~/.config/bspwm/bspwmrc)
-	if [[ "$LAST_LINE" == urxvt* ]]; then # If line begins with urxvt
-		head -n -1 ~/.config/bspwm/bspwmrc > ~/.config/bspwm/bspwmrc # Remove added line from bspwmrc
-	fi
 
 	xclip -sel clip < ~/.ssh/id_rsa.pub # Copy our public rsakey to clipboard to add to github
 	# Open sign in for accounts
