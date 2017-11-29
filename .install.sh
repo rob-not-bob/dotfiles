@@ -149,6 +149,8 @@ if ! [ type "bspwm" > /dev/null ] || [ "$1" = "packages" ]; then
 	lemonbar-xft-git \
 	compton \
 	wmname \
+	freeglut \
+	glu \
 	rxvt-unicode \
 	ttf-font-awesome \
 	ttf-anonymice-powerline-git \
@@ -162,6 +164,7 @@ if ! [ type "bspwm" > /dev/null ] || [ "$1" = "packages" ]; then
 	firefox \
 	slim \
 	dropbox \
+	dropbox-cli \
 	visual-studio-code
 
 	ssh-keygen -t rsa -b 4096 -N "" -f ~/.ssh/id_rsa # Create ssh key for github
@@ -171,7 +174,6 @@ fi
 if ! [ -d "/home/ace/.vim/bundle/Vundle.vim" ] || [ "$1" = "vim" ]; then
 	echo "Vim setup..."
 	mkdir -p ~/.vim/bundle
-	vim +qall
 	git clone https://github.com/VundleVim/Vundle.vim.git /home/ace/.vim/bundle/Vundle.vim
 	vim +PluginInstall +qall
 fi
