@@ -8,6 +8,7 @@
 [alias]
 	s = status -sb
 	a = add
+	c = commit
 	lg = log --oneline --decorate --all --graph
 	cm = commit -m 
 	st = status
