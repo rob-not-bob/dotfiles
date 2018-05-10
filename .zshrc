@@ -33,8 +33,6 @@ alias lsr='ls -l ./*(mh-1)'
 
 alias bc='bc -l -q'
 
-alias c="xclip -selection clipboard"
-alias p="xclip -o -selection clipboard"
 alias open="xdg-open"
 
 HISTFILE=~/.history
