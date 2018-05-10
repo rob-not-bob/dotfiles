@@ -1,0 +1,41 @@
+alias ls='ls -G'
+alias ll='ls -la'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../../'
+alias ......='cd ../../../../..'
+alias .......='cd ../../../../../..'
+
+alias sz='source ~/.zshrc'
+alias ez='vim ~/.zshrc'
+alias ev='vim ~/.vimrc'
+
+alias grep='grep --color=auto'
+
+alias lsr='ls -l ./*(mh-1)'
+
+alias bc='bc -l -q'
+
+alias c="xclip -selection clipboard"
+alias p="xclip -o -selection clipboard"
+
+# NTD API
+alias ntd01-dev='ssh rcallen@10.43.27.93'
+alias ntd02-dev='ssh rcallen@10.43.27.78'
+alias ntd01-preprod='ssh rcallen@10.43.36.90'
+alias ntd02-preprod='ssh rcallen@10.43.36.72'
+alias ntd01-prod='ssh rcallen@10.43.52.83'
+alias ntd02-prod='ssh rcallen@10.43.52.104'
+alias ntd03-prod='ssh rcallen@10.43.52.152'
+alias ntd07-prod='ssh rcallen@10.43.52.71'
+alias ntdapi='ssh rcallen@10.43.52.71'
+
+alias dklogin='docker exec -it rcallen_dev bash'
+alias jump='ssh -o ServerAliveInterval=60 -o TCPKeepAlive=yes -L 3366:10.65.168.139:3306 -L 3334:slaves.msql.exede.viasat.io:3306 -L 3333:10.65.105.54:3307 -L 3336:10.65.105.47:3307 -L 3211:10.67.36.211:3306 -L 3212:10.67.36.212:3306 -L 3267:10.65.107.67:3307 -L 1526:10.65.105.101:1526 -L 1632:10.67.40.26:1632 robert.allen@enggwjump01.prod.wdc1.wildblue.net'
+
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/platform-tools
+

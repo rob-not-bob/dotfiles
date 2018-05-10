@@ -6,7 +6,7 @@ export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 export VISUAL=vim
 export EDITOR="$VISUAL"
 export BROWSER="qutebrowser"
-export PATH="$JAVA_HOME/bin:/home/ace/.gem/ruby/2.3.0/bin:$PATH"
+export PATH="$JAVA_HOME/bin:/home/ace/.gem/ruby/2.3.0/bin:/usr/local/lib/python3.6/site-packages:$PATH"
 
 color_fg="#ebdbb2"
 color_icon="#cc4b47"

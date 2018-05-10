@@ -12,8 +12,9 @@ export KEYTIMEOUT=1			# reduce lag between <ESC> and normal mode to 0.1s
 
 # ALIASES
 
-alias ls='ls --color'
-alias ll='ls -la'
+export LSCOLORS="ExFxdxbxCxBxDxxx"
+alias ls='ls -G'
+alias ll='ls -lha'
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -56,6 +57,8 @@ setopt HIST_FIND_NO_DUPS
 #zle -N insert-sudo insert_sudo
 #bindkey "\es" insert-sudo
 
+source ~/.aliases
+
 bindkey "^K" history-incremental-pattern-search-backward
 bindkey "^J" history-incremental-pattern-search-forward
 
@@ -96,3 +99,6 @@ compinit
 #}
 #zle -N zle-line-init
 #zle -N zle-keymap-select
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/usr/local/opt/qt/bin:$PATH"
