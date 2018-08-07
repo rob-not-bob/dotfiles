@@ -100,3 +100,4 @@ compinit
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 export PATH="/usr/local/opt/qt/bin:$PATH"
+export PATH="/Users/rcallen/miniconda3/bin:$PATH"

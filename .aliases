@@ -1,6 +1,8 @@
 alias ls='ls -G'
 alias ll='ls -la'
 
+LS_COLORS=
+
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -20,6 +22,20 @@ alias bc='bc -l -q'
 
 alias c="xclip -selection clipboard"
 alias p="xclip -o -selection clipboard"
+alias rechunk="brew services restart chunkwm"
+alias nochunk="brew services stop chunkwm"
+
+# eSVT
+alias esvt01-prod='ssh robert.allen@esvt01-prod'
+alias esvt01-test='ssh robert.allen@esvt01-test'
+alias esvt01-dev='ssh robert.allen@esvt01-dev'
+alias esvt='ssh robert.allen@esvt01-dev'
+
+# CTS
+alias esvtapi01-prod='ssh robert.allen@esvtapi01-prod'
+alias esvtapi01-test='ssh robert.allen@esvtapi01-test'
+alias esvtapi01-dev='ssh robert.allen@esvtapi01-dev'
+alias ctsapi='ssh robert.allen@esvtapi01-dev'
 
 # NTD API
 alias ntd01-dev='ssh rcallen@10.43.27.93'
@@ -31,6 +47,8 @@ alias ntd02-prod='ssh rcallen@10.43.52.104'
 alias ntd03-prod='ssh rcallen@10.43.52.152'
 alias ntd07-prod='ssh rcallen@10.43.52.71'
 alias ntdapi='ssh rcallen@10.43.52.71'
+
+alias full_make='make clean && make install && kill $(ps -ef | grep [u]wsgi | awk '{print $2}') && tail -f /apps/logs/*'
 
 alias dklogin='docker exec -it rcallen_dev bash'
 alias jump='ssh -o ServerAliveInterval=60 -o TCPKeepAlive=yes -L 3366:10.65.168.139:3306 -L 3334:slaves.msql.exede.viasat.io:3306 -L 3333:10.65.105.54:3307 -L 3336:10.65.105.47:3307 -L 3211:10.67.36.211:3306 -L 3212:10.67.36.212:3306 -L 3267:10.65.107.67:3307 -L 1526:10.65.105.101:1526 -L 1632:10.67.40.26:1632 robert.allen@enggwjump01.prod.wdc1.wildblue.net'
