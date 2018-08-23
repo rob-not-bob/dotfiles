@@ -12,6 +12,7 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'morhetz/gruvbox'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'mattn/emmet-vim'
+Plugin 'nvie/vim-flake8'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'scrooloose/syntastic'
@@ -47,10 +48,11 @@ autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
 
 " UI CONFIG
 
-set number			" show line numbers
-set relativenumber	" set relative line numbers
-set showcmd			" show command in bottom bar
-set cursorline		" highlight the current line
+set number			            " show line numbers
+set relativenumber	            " set relative line numbers
+set showcmd			            " show command in bottom bar
+set cursorline		            " highlight the current line
+set backspace=indent,eol,start  " make backspace behave normally in insert mode
 
 "filetype indent on	" load filetype specific indent files
 set wildmenu		" visual autocomplete for command menu
@@ -130,7 +132,6 @@ set guioptions-=L		" Remove left scrollbar
 " CTRL-P
 
 let g:ctrlp_working_path_mode = 'c'
-
 
 " Syntastic (Syntax checking)
 set statusline+=%#warningmsg#
