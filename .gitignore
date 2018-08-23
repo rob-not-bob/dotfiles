@@ -6,8 +6,6 @@
 !.gitignore_global
 !.eslintrc.js
 !.chunkwmrc
-!.chunkwm_plugins
-!.chunkwm_plugins/*
 !.skhdrc
 .config/*
 !.config/
@@ -19,9 +17,4 @@
 .vim/*
 !.zshrc
 !.bashrc
-!bin
-!bin/*
-!pictures
-!pictures/JnTdj4w.jpg
-!pictures/6qZqX.jpg
 !.profile
