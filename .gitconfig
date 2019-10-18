@@ -19,6 +19,7 @@
 	cl = clone
 	pl = pull
 	ps = push
+    review = diff --staged
 [core]
 	autocrlf = input
 	excludesfile = /home/ace/.gitignore_global
