@@ -17,5 +17,4 @@ fi
 
 sxhkd &
 bar_notifyd &
-mpd &
 exec bspwm
