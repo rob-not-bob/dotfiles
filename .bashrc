@@ -1,6 +1,9 @@
 
 set -o vi
-source .aliases
+
+if [ -f ~/.aliases ]; then
+    source .aliases
+fi
 
 git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'

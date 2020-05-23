@@ -19,6 +19,7 @@
 	cl = clone
 	pl = pull
 	ps = push
+    review = diff --staged
 [core]
 	autocrlf = input
 	excludesfile = /home/ace/.gitignore_global
@@ -32,3 +33,8 @@
   ui = true
   pager = true
 
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f

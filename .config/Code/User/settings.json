@@ -1,6 +1,5 @@
 {
     "workbench.colorTheme": "Gruvbox Dark (Medium)",
-    "vim.disableAnnoyingNeovimMessage": true,
     "vim.searchHighlightColor": "rgba(254, 128, 25, 0.3)",
     "vim.useSystemClipboard": true,
     "vim.hlsearch": true,
@@ -10,7 +9,7 @@
     "vim.easymotionMarkerForegroundColorOneChar": "#fe8019",
     "vim.easymotionMarkerForegroundColorTwoChar": "#fe8019",
     "vim.insertModeKeyBindingsNonRecursive": [],
-    "vim.otherModesKeyBindingsNonRecursive": [
+    "vim.normalModeKeyBindingsNonRecursive": [
         {
             "before": ["leader", "h"],
             "after": [],
@@ -22,7 +21,17 @@
             ]
         },
         {
-            "before": ["<C-n>"],
+            "before": ["<C-x>"],
+            "after": [],
+            "commands": [
+                {
+                    "command": ":tabprevious",
+                    "args": []
+                }
+            ]
+        },
+        {
+            "before": ["<C-c>"],
             "after": [],
             "commands": [
                 {
@@ -30,6 +39,26 @@
                     "args": []
                 }
             ]
+        },
+        {
+            "before": ["<C-h>"],
+            "after": ["<C-w>", "h"],
+        },
+        {
+            "before": ["<C-j>"],
+            "after": ["<C-w>", "j"],
+        },
+        {
+            "before": ["<C-k>"],
+            "after": ["<C-w>", "k"],
+        },
+        {
+            "before": ["<C-l>"],
+            "after": ["<C-w>", "l"],
+        },
+        {
+            "before": ["<C-u>"],
+            "after": ["dd", "k", "P"],
         }
     ],
     "workbench.colorCustomizations": {
@@ -81,5 +110,82 @@
         "terminal.ansiWhite": "#a89984",
         "terminal.ansiBrightWhite": "#ebdbb2"
     },
-    "workbench.iconTheme": "material-icon-theme"
+    "editor.tokenColorCustomizations": {
+        "[Gruvbox Dark (Medium)]": {
+            "textMateRules": [
+                {
+                    "scope": ["keyword.control.import", "keyword.control.from"],
+                    "settings": {
+                        "foreground": "#8ec07c"
+                    }
+                },
+                {
+                    "scope": ["variable", "variable.other.constant"],
+                    "settings": {
+                        "foreground": "#ebdbb2"
+                    }
+                },
+                {
+                    "scope": "support.type",
+                    "settings": {
+                        "foreground": "#d3869b",
+                    }
+                },
+                {
+                    "scope": "entity.name.type",
+                    "settings": {
+                        "foreground": "#8ec07c",
+                    }
+                }
+            ]
+        },
+    },
+    "workbench.iconTheme": "material-icon-theme",
+    "editor.fontFamily": "Source Code Pro",
+    "editor.tabSize": 2,
+    "terminal.integrated.fontFamily": "Anonymous Pro for Powerline",
+    "terminal.integrated.fontSize": 14,
+    "editor.smoothScrolling": true,
+    "editor.tabCompletion": "on",
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.formatOnSave": true,
+    "files.defaultLanguage": "javascript",
+    "workbench.commandPalette.history": 10000,
+    "search.exclude": {
+        "**/.git": true
+    },
+    "terminal.external.osxExec": "iTerm.app",
+    "terminal.integrated.scrollback": 10000,
+    "css.lint.duplicateProperties": "warning",
+    "css.lint.important": "error",
+    "css.lint.zeroUnits": "warning",
+    "editor.fontWeight": "600",
+    "editor.fontSize": 13,
+    "terminal.integrated.fontWeight": "600",
+    "javascript.preferences.quoteStyle": "single",
+    "typescript.preferences.quoteStyle": "single",
+    "editor.renderWhitespace": "boundary",
+    "vim.foldfix": true,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.minimap.enabled": false,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "java.errors.incompleteClasspath.severity": "ignore",
+    "typescript.updateImportsOnFileMove.enabled": "never",
+    "window.zoomLevel": 0,
+    "sync.autoUpload": true,
+    "sync.autoDownload": true,
+    "sync.gist": "89a1e6e08b257bcf7378715662e2ebe9",
+    "python.jediEnabled": false
 }

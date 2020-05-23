@@ -21,6 +21,8 @@ Plugin 'tpope/vim-surround'
 Plugin 'leafgarland/typescript-vim'
 Plugin 'Quramy/tsuquyomi'
 Plugin 'pangloss/vim-javascript'
+Plugin 'mxw/vim-jsx'
+Plugin 'kchmck/vim-coffee-script'
 
 call vundle#end()
 
@@ -42,14 +44,14 @@ set softtabstop=4 	" number of spaces in tab when editing
 set autoindent		" auto indents
 set expandtab		" insert tabs instead of spaces when indenting
 autocmd FileType ruby setlocal ts=2 sts=2 sw=2
-autocmd FileType javascript setlocal ts=4 sts=4 sw=4
-autocmd FileType yml setlocal ts=2 sts=2 sw=2 expandtab
-autocmd FileType python setlocal ts=4 sts=4 sw=4 expandtab
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType html setlocal ts=2 sts=2 sw=2
+autocmd FileType yml setlocal ts=2 sts=2 sw=2
+autocmd FileType python setlocal ts=4 sts=4 sw=4
 
 " UI CONFIG
 
 set number			            " show line numbers
-set relativenumber	            " set relative line numbers
 set showcmd			            " show command in bottom bar
 set cursorline		            " highlight the current line
 set backspace=indent,eol,start  " make backspace behave normally in insert mode
