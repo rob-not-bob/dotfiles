@@ -1,191 +1,239 @@
 {
-    "workbench.colorTheme": "Gruvbox Dark (Medium)",
-    "vim.searchHighlightColor": "rgba(254, 128, 25, 0.3)",
-    "vim.useSystemClipboard": true,
-    "vim.hlsearch": true,
-    "vim.useCtrlKeys": true,
-    "vim.easymotion": true,
-    "vim.easymotionMarkerBackgroundColor": "#282828",
-    "vim.easymotionMarkerForegroundColorOneChar": "#fe8019",
-    "vim.easymotionMarkerForegroundColorTwoChar": "#fe8019",
-    "vim.insertModeKeyBindingsNonRecursive": [],
-    "vim.normalModeKeyBindingsNonRecursive": [
+  "workbench.colorTheme": "Gruvbox Dark (Medium)",
+  "vim.searchHighlightColor": "rgba(254, 128, 25, 0.3)",
+  "vim.useSystemClipboard": true,
+  "vim.hlsearch": true,
+  "vim.useCtrlKeys": true,
+  "vim.easymotion": true,
+  "vim.easymotionMarkerBackgroundColor": "#282828",
+  "vim.easymotionMarkerForegroundColorOneChar": "#fe8019",
+  "vim.easymotionMarkerForegroundColorTwoChar": "#fe8019",
+  "vim.insertModeKeyBindingsNonRecursive": [],
+  "vim.normalModeKeyBindingsNonRecursive": [
+    {
+      "before": ["leader", "h"],
+      "after": [],
+      "commands": [
         {
-            "before": ["leader", "h"],
-            "after": [],
-            "commands": [
-                {
-                    "command": ":nohl",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": ["<C-x>"],
-            "after": [],
-            "commands": [
-                {
-                    "command": ":tabprevious",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": ["<C-c>"],
-            "after": [],
-            "commands": [
-                {
-                    "command": ":tabnext",
-                    "args": []
-                }
-            ]
-        },
-        {
-            "before": ["<C-h>"],
-            "after": ["<C-w>", "h"],
-        },
-        {
-            "before": ["<C-j>"],
-            "after": ["<C-w>", "j"],
-        },
-        {
-            "before": ["<C-k>"],
-            "after": ["<C-w>", "k"],
-        },
-        {
-            "before": ["<C-l>"],
-            "after": ["<C-w>", "l"],
-        },
-        {
-            "before": ["<C-u>"],
-            "after": ["dd", "k", "P"],
+          "command": ":nohl",
+          "args": []
         }
-    ],
-    "workbench.colorCustomizations": {
-        "selection.background": "#f2e5bc",
-        "input.foreground": "#ebdbb2",
-        "input.placeholderForeground": "#ae9984",
-        "editorLineNumber.foreground": "#928374",
-        "editorWarning.foreground": "#b57614",
-        "editorError.foreground": "#cc241d",
-        "editorWidget.background": "#282828",
-        "editorGutter.modifiedBackground": "#b57614",
-        "editorGutter.addedBackground": "#79740e",
-        "editorGutter.deletedBackground": "#9d0006",
-        "editor.foreground": "#ebdbb2",
-        "activityBar.background": "#32302f",
-        "activityBar.foreground": "#ebdbb2",
-        "activityBarBadge.background": "#b16286",
-        "activityBarBadge.foreground": "#ebdbb2",
-        "sideBar.background": "#32302f",
-        "sideBar.foreground": "#ebdbb2",
-        "tab.activeForeground": "#ebdbb2",
-        "tab.inactiveForeground": "#ae9984",
-        "tab.unfocusedInactiveForeground": "#ae9984",
-        "badge.foreground": "#ae9984",
-        "panelTitle.activeForeground": "#ebdbb2",
-        "statusBar.background": "#3C3836",
-        "statusBar.foreground": "#ebdbb2",
-        "statusBar.noFolderBackground": "#3c3836",
-        "statusBar.noFolderForeground": "#ebdbb2",
-        "statusBar.debuggingBackground": "#3c3836",
-        "statusBar.debuggingForeground": "#ebdbb2",
-        "dropdown.foreground": "#ebdbb2",
-        "terminal.foreground": "#ebdbb2",
-        "terminal.background": "#282828",
-        "terminal.ansiBlack": "#282828",
-        "terminal.ansiBrightBlack": "#928374",
-        "terminal.ansiRed": "#cc241d",
-        "terminal.ansiBrightRed": "#fb4943",
-        "terminal.ansiGreen": "#98971a",
-        "terminal.ansiBrightGreen": "#b8bb26",
-        "terminal.ansiYellow": "#d79921",
-        "terminal.ansiBrightYellow": "#fabd2f",
-        "terminal.ansiBrightBlue": "#83a598",
-        "terminal.ansiBlue": "#438488",
-        "terminal.ansiMagenta": "#b16286",
-        "terminal.ansiBrightMagenta": "#d3869b",
-        "terminal.ansiCyan": "#689d6a",
-        "terminal.ansiBrightCyan": "#8ec07c",
-        "terminal.ansiWhite": "#a89984",
-        "terminal.ansiBrightWhite": "#ebdbb2"
+      ]
     },
-    "editor.tokenColorCustomizations": {
-        "[Gruvbox Dark (Medium)]": {
-            "textMateRules": [
-                {
-                    "scope": ["keyword.control.import", "keyword.control.from"],
-                    "settings": {
-                        "foreground": "#8ec07c"
-                    }
-                },
-                {
-                    "scope": ["variable", "variable.other.constant"],
-                    "settings": {
-                        "foreground": "#ebdbb2"
-                    }
-                },
-                {
-                    "scope": "support.type",
-                    "settings": {
-                        "foreground": "#d3869b",
-                    }
-                },
-                {
-                    "scope": "entity.name.type",
-                    "settings": {
-                        "foreground": "#8ec07c",
-                    }
-                }
-            ]
+    {
+      "before": ["<C-x>"],
+      "after": [],
+      "commands": [
+        {
+          "command": ":tabprevious",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": ["<C-c>"],
+      "after": [],
+      "commands": [
+        {
+          "command": ":tabnext",
+          "args": []
+        }
+      ]
+    },
+    {
+      "before": ["<C-h>"],
+      "after": ["<C-w>", "h"]
+    },
+    {
+      "before": ["<C-j>"],
+      "after": ["<C-w>", "j"]
+    },
+    {
+      "before": ["<C-k>"],
+      "after": ["<C-w>", "k"]
+    },
+    {
+      "before": ["<C-l>"],
+      "after": ["<C-w>", "l"]
+    },
+    {
+      "before": ["<C-u>"],
+      "after": ["dd", "k", "P"]
+    }
+  ],
+  "workbench.colorCustomizations": {
+    "selection.background": "#f2e5bc",
+    "input.foreground": "#ebdbb2",
+    "input.placeholderForeground": "#ae9984",
+    "editorLineNumber.foreground": "#928374",
+    "editorWarning.foreground": "#b57614",
+    "editorError.foreground": "#cc241d",
+    "editorWidget.background": "#282828",
+    "editorGutter.modifiedBackground": "#b57614",
+    "editorGutter.addedBackground": "#79740e",
+    "editorGutter.deletedBackground": "#9d0006",
+    "editor.foreground": "#ebdbb2",
+    "activityBar.background": "#32302f",
+    "activityBar.foreground": "#ebdbb2",
+    "activityBarBadge.background": "#b16286",
+    "activityBarBadge.foreground": "#ebdbb2",
+    "sideBar.background": "#32302f",
+    "sideBar.foreground": "#ebdbb2",
+    "tab.activeForeground": "#ebdbb2",
+    "tab.inactiveForeground": "#ae9984",
+    "tab.unfocusedInactiveForeground": "#ae9984",
+    "badge.foreground": "#ae9984",
+    "panelTitle.activeForeground": "#ebdbb2",
+    "statusBar.background": "#3C3836",
+    "statusBar.foreground": "#ebdbb2",
+    "statusBar.noFolderBackground": "#3c3836",
+    "statusBar.noFolderForeground": "#ebdbb2",
+    "statusBar.debuggingBackground": "#3c3836",
+    "statusBar.debuggingForeground": "#ebdbb2",
+    "dropdown.foreground": "#ebdbb2",
+    "terminal.foreground": "#ebdbb2",
+    "terminal.background": "#282828",
+    "terminal.ansiBlack": "#282828",
+    "terminal.ansiBrightBlack": "#928374",
+    "terminal.ansiRed": "#cc241d",
+    "terminal.ansiBrightRed": "#fb4943",
+    "terminal.ansiGreen": "#98971a",
+    "terminal.ansiBrightGreen": "#b8bb26",
+    "terminal.ansiYellow": "#d79921",
+    "terminal.ansiBrightYellow": "#fabd2f",
+    "terminal.ansiBrightBlue": "#83a598",
+    "terminal.ansiBlue": "#438488",
+    "terminal.ansiMagenta": "#b16286",
+    "terminal.ansiBrightMagenta": "#d3869b",
+    "terminal.ansiCyan": "#689d6a",
+    "terminal.ansiBrightCyan": "#8ec07c",
+    "terminal.ansiWhite": "#a89984",
+    "terminal.ansiBrightWhite": "#ebdbb2"
+  },
+  "editor.tokenColorCustomizations": {
+    "[Gruvbox Dark (Medium)]": {
+      "textMateRules": [
+        {
+          "scope": ["keyword.control.import", "keyword.control.from"],
+          "settings": {
+            "foreground": "#8ec07c"
+          }
         },
+        {
+          "scope": ["variable", "variable.other.constant"],
+          "settings": {
+            "foreground": "#ebdbb2"
+          }
+        },
+        {
+          "scope": "support.type",
+          "settings": {
+            "foreground": "#d3869b"
+          }
+        },
+        {
+          "scope": "entity.name.type",
+          "settings": {
+            "foreground": "#8ec07c"
+          }
+        }
+      ]
+    }
+  },
+  "workbench.iconTheme": "material-icon-theme",
+  "editor.fontFamily": "Source Code Pro",
+  "editor.tabSize": 2,
+  "terminal.integrated.fontFamily": "Anonymous Pro for Powerline",
+  "terminal.integrated.fontSize": 14,
+  "editor.smoothScrolling": true,
+  "editor.tabCompletion": "on",
+  "editor.cursorSmoothCaretAnimation": true,
+  "editor.formatOnSave": true,
+  "files.defaultLanguage": "javascript",
+  "workbench.commandPalette.history": 10000,
+  "search.exclude": {
+    "**/.git": true
+  },
+  "terminal.external.osxExec": "iTerm.app",
+  "terminal.integrated.scrollback": 10000,
+  "css.lint.duplicateProperties": "warning",
+  "css.lint.important": "error",
+  "css.lint.zeroUnits": "warning",
+  "editor.fontWeight": "600",
+  "editor.fontSize": 13,
+  "terminal.integrated.fontWeight": "600",
+  "javascript.preferences.quoteStyle": "single",
+  "typescript.preferences.quoteStyle": "single",
+  "editor.renderWhitespace": "boundary",
+  "vim.foldfix": true,
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "editor.suggestSelection": "first",
+  "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+  "editor.minimap.enabled": false,
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true
+  },
+  "java.errors.incompleteClasspath.severity": "ignore",
+  "typescript.updateImportsOnFileMove.enabled": "never",
+  "window.zoomLevel": 0,
+  "sync.autoUpload": true,
+  "sync.autoDownload": true,
+  "sync.gist": "89a1e6e08b257bcf7378715662e2ebe9",
+  "python.jediEnabled": false,
+  "git.autofetch": true,
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "githubIssues.queries": [
+    {
+      "label": "My Issues",
+      "query": "default"
     },
-    "workbench.iconTheme": "material-icon-theme",
-    "editor.fontFamily": "Source Code Pro",
-    "editor.tabSize": 2,
-    "terminal.integrated.fontFamily": "Anonymous Pro for Powerline",
-    "terminal.integrated.fontSize": 14,
-    "editor.smoothScrolling": true,
-    "editor.tabCompletion": "on",
-    "editor.cursorSmoothCaretAnimation": true,
-    "editor.formatOnSave": true,
-    "files.defaultLanguage": "javascript",
-    "workbench.commandPalette.history": 10000,
-    "search.exclude": {
-        "**/.git": true
+    {
+      "label": "Created Issues",
+      "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    }
+  ],
+  "githubPullRequests.queries": [
+    {
+      "label": "Waiting For My Review",
+      "query": "is:open review-requested:${user}"
     },
-    "terminal.external.osxExec": "iTerm.app",
-    "terminal.integrated.scrollback": 10000,
-    "css.lint.duplicateProperties": "warning",
-    "css.lint.important": "error",
-    "css.lint.zeroUnits": "warning",
-    "editor.fontWeight": "600",
-    "editor.fontSize": 13,
-    "terminal.integrated.fontWeight": "600",
-    "javascript.preferences.quoteStyle": "single",
-    "typescript.preferences.quoteStyle": "single",
-    "editor.renderWhitespace": "boundary",
-    "vim.foldfix": true,
-    "[typescriptreact]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    {
+      "label": "Assigned To Me",
+      "query": "is:open assignee:${user}"
     },
-    "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "editor.suggestSelection": "first",
-    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
-    "editor.minimap.enabled": false,
-    "files.exclude": {
-        "**/.classpath": true,
-        "**/.project": true,
-        "**/.settings": true,
-        "**/.factorypath": true
-    },
-    "java.errors.incompleteClasspath.severity": "ignore",
-    "typescript.updateImportsOnFileMove.enabled": "never",
-    "window.zoomLevel": 0,
-    "sync.autoUpload": true,
-    "sync.autoDownload": true,
-    "sync.gist": "89a1e6e08b257bcf7378715662e2ebe9",
-    "python.jediEnabled": false
+    {
+      "label": "Created By Me",
+      "query": "is:open author:${user}"
+    }
+  ],
+  "diffEditor.renderSideBySide": true,
+"extensions.ignoreRecommendations": false,
+"python.languageServer": "Microsoft",
+"liveshare.authenticationProvider": "GitHub",
+"[jsonc]": {
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+},
+"[html]": {
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+},
+"workbench.editorAssociations": [
+  {
+    "viewType": "jupyter.notebook.ipynb",
+    "filenamePattern": "*.ipynb"
+  }
+],
+"workbench.startupEditor": "welcomePage"
 }

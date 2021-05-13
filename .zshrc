@@ -32,8 +32,6 @@ alias lsr='ls -l ./*(mh-1)'
 
 alias bc='bc -l -q'
 
-alias open="xdg-open"
-
 HISTFILE=~/.history
 
 SAVEHIST=10000
@@ -117,4 +115,16 @@ export PATH="${HOME}/bin:$PATH"
 if [ -f /Users/rcallen/.tnsrc ]; then 
     source /Users/rcallen/.tnsrc 
 fi
+# . ~/.fastlane/completions/completion.sh
 ###-tns-completion-end-###
+
+# brew CLI commands auto completion 
+# if type brew &>/dev/null; then
+#   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
+# 
+#   autoload -Uz compinit
+#   compinit
+# fi
+
+# if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
+

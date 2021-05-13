@@ -2,7 +2,7 @@
 set -o vi
 
 if [ -f ~/.aliases ]; then
-    source .aliases
+    source ~/.aliases
 fi
 
 git_branch() {
@@ -17,3 +17,6 @@ if [ -f /Users/rcallen/.tnsrc ]; then
     source /Users/rcallen/.tnsrc 
 fi
 ###-tns-completion-end-###
+. ~/.fastlane/completions/completion.sh
+
+source "/Users/rcallen/.rover/env"

@@ -20,40 +20,14 @@ alias lsr='ls -l ./*(mh-1)'
 
 alias bc='bc -l -q'
 
-alias c="xclip -selection clipboard"
-alias p="xclip -o -selection clipboard"
-alias rechunk="brew services restart chunkwm"
-alias nochunk="brew services stop chunkwm"
+# MV Build Machines
+ICAT_PROD_PEM_FILE=~/wd/icat-prod.pem
 
-# eSVT
-alias esvt01-prod='ssh robert.allen@esvt01-prod'
-alias esvt02-prod='ssh robert.allen@esvt02-prod'
-alias esvt03-prod='ssh robert.allen@esvt03-prod'
-alias esvt01-test='ssh robert.allen@esvt01-test'
-alias esvt01-dev='ssh robert.allen@esvt01-dev'
-alias esvt='ssh robert.allen@esvt01-dev'
+alias ssh-jenkins='ssh -i ${ICAT_PROD_PEM_FILE} deployuser@jenkins.icat.viasat.io'
+alias ssh-osx='ssh -i ${ICAT_PROD_PEM_FILE} jenkins@172.27.146.136'
 
-# CTS
-alias esvtapi01-prod='ssh robert.allen@esvtapi01-prod'
-alias esvtapi01-test='ssh robert.allen@esvtapi01-test'
-alias esvtapi01-dev='ssh robert.allen@esvtapi01-dev'
-alias ctsapi='ssh robert.allen@esvtapi01-dev'
-
-# NTD API
-alias ntd01-dev='ssh rcallen@10.43.27.93'
-alias ntd02-dev='ssh rcallen@10.43.27.78'
-alias ntd01-preprod='ssh rcallen@10.43.36.90'
-alias ntd02-preprod='ssh rcallen@10.43.36.72'
-alias ntd01-prod='ssh rcallen@ntdapi-1.gcap.viasat.io'
-alias ntd02-prod='ssh rcallen@ntdapi-2.gcap.viasat.io'
-alias ntd03-prod='ssh rcallen@ntdapi-3.gcap.viasat.io'
-alias ntd-staging='ssh rcallen@ntdapi-staging.prod.cts.viasat.io'
-alias ntd-staging-new='ssh rcallen@ntdapi-staging.gcap.viasat.io'
-alias ntdapi='ssh rcallen@ntdapi-staging.prod.cts.viasat.io'
-
-alias dklogin='docker exec -it rcallen_dev bash'
-alias jump='ssh -o ServerAliveInterval=60 -o TCPKeepAlive=yes -L 3366:10.65.168.139:3306 -L 3334:slaves.msql.exede.viasat.io:3306 -L 3333:10.65.105.54:3307 -L 3336:10.65.105.47:3307 -L 3211:10.67.36.211:3306 -L 3212:10.67.36.212:3306 -L 3267:10.65.107.67:3307 -L 1526:10.65.105.101:1526 -L 1632:10.67.40.26:1632 -L 3268:10.65.107.68:3307 robert.allen@enggwjump01.prod.wdc1.wildblue.net'
-
+export ANDROID_HOME=$HOME/Library/Android/sdk
+export ANDROID_SDK_ROOT=$ANDROID_HOME
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$ANDROID_HOME/emulator:$ANDROID_HOME/tools:$PATH
 export PATH=$PATH:$ANDROID_HOME/tools/bin
@@ -62,10 +36,12 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 export SIMULATOR='iPhone 11 Pro Max'
-export MY_VIASERVER_HOME=$HOME/wd/MyViasat/MyViasatServer
-export MY_VIASAT_HOME=$HOME/wd/MyViasat/MyViaserver
-export MY_VIASAT_HOME=$HOME/wd/MyViasat/MyViasat
+export MY_VIASERVER_HOME=$HOME/wd/MyViasatServer
+export MY_VIASAT_HOME=$HOME/wd/MyViaserver
+export MY_VIASAT_HOME=$HOME/wd/MyViasat
+
 alias start-myviaserver='cd $MY_VIASERVER_HOME; yarn && yarn dev'
 alias run-ios-myviasat='cd $MY_VIASAT_HOME/packages/mobile && yarn ios --simulator $SIMULATOR'
 alias run-ios-bday='cd $HOME/wd/BirthdayReminder && yarn ios --simulator $SIMULATOR'
 alias python=/usr/local/bin/python3
+
