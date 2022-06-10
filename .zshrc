@@ -111,22 +111,3 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="${HOME}/miniconda3/bin:$PATH"
 export PATH="${HOME}/bin:$PATH"
 
-###-tns-completion-start-###
-if [ -f /Users/rcallen/.tnsrc ]; then 
-    source /Users/rcallen/.tnsrc 
-fi
-# . ~/.fastlane/completions/completion.sh
-###-tns-completion-end-###
-
-# brew CLI commands auto completion 
-# if type brew &>/dev/null; then
-#   FPATH=$(brew --prefix)/share/zsh/site-functions:$FPATH
-# 
-#   autoload -Uz compinit
-#   compinit
-# fi
-
-# if which rbenv > /dev/null; then eval "$(rbenv init -)"; fi
-
-source <(kubectl completion zsh)
-
