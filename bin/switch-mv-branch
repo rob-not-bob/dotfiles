@@ -1,0 +1,10 @@
+#!/bin/sh
+
+cd ~/wd/MyViasat/MyViasat
+git co $1
+yarn
+cd packages/mobile
+yarn update-env
+cd ios
+pod install
+cd ../../..

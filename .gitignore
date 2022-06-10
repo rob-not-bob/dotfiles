@@ -1,5 +1,8 @@
 *
 
+!bin
+!bin/*
+bin/.DS_Store
 !.aliases
 !.gitignore
 !.gitconfig

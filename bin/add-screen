@@ -1,0 +1,39 @@
+#!/bin/sh
+# add-screen ./JobInfo/Installation
+# Creates
+# ./JobInfo/Installation/index.js
+# ./JobInfo/Installation/text.json
+# ./JobInfo/Installation/styles.js
+# ./JobInfo/Installation/Installation.js
+# Based off of template files
+
+RESOURCES_DIR="${HOME}/bin/add-screen-resources"
+REPLACE_REGEX="SCREEN_NAME"
+
+if [ -z "$1" ]; then
+  echo 2> "Must provide the name of the new screen"
+  exit 1
+fi
+
+SCREENS_DIR="$(echo "$1" | awk -F "screens" '{print $1}')screens"
+LOCAL_SCREEN_DIR=".$(echo "$1" | awk -F "screens" '{print $2}')"
+SCREENS_INDEX_FILE="${SCREENS_DIR}/index.js"
+NEW_SCREEN_DIR="$1"
+SCREEN_NAME=$(basename "${NEW_SCREEN_DIR}")
+
+# Create the directory
+mkdir -p ${NEW_SCREEN_DIR}
+# Copy our template files
+cp -r ${RESOURCES_DIR}/* "${NEW_SCREEN_DIR}"
+# Rename our main component file
+mv "${NEW_SCREEN_DIR}/${REPLACE_REGEX}.js" "${NEW_SCREEN_DIR}/${SCREEN_NAME}.js"
+
+# Substitute REPLACE_REGEX with the screen name in all our template files
+for file in ${NEW_SCREEN_DIR}/*; do
+  sed -i "" "s/${REPLACE_REGEX}/${SCREEN_NAME}/g" ${file}
+done
+
+# Add the import to the screen index file
+echo "import ${SCREEN_NAME} from '${LOCAL_SCREEN_DIR}'" >> $SCREENS_INDEX_FILE
+
+ls ${NEW_SCREEN_DIR}

@@ -34,7 +34,7 @@ cmd + alt - escape: brew services restart yabai
 ctrl + alt - escape: brew services restart skhd
 
 # open terminal
-cmd - return : osascript ~/bin/create-new-iterm2.applescript
+# cmd - return : osascript ~/bin/create-new-iterm2.applescript
 
 # focus window
 alt - h : yabai -m window --focus west

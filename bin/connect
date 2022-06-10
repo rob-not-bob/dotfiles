@@ -1,0 +1,9 @@
+#!/bin/sh
+
+pkill AnyConnect
+/opt/cisco/anyconnect/bin/vpn connect "ViaSat SDP APPS VPN" -s <<EOM
+robert.allen@viasat.com
+$(sudo security find-generic-password -ws 'viasat_anyconnect')
+push
+EOM
+

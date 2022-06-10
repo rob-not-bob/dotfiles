@@ -181,9 +181,9 @@
     "**/.settings": true,
     "**/.factorypath": true
   },
+  "github-enterprise.uri": "https://git.viasat.com",
   "java.errors.incompleteClasspath.severity": "ignore",
   "typescript.updateImportsOnFileMove.enabled": "never",
-  "window.zoomLevel": 0,
   "sync.autoUpload": true,
   "sync.autoDownload": true,
   "sync.gist": "89a1e6e08b257bcf7378715662e2ebe9",
@@ -220,20 +220,58 @@
     }
   ],
   "diffEditor.renderSideBySide": true,
-"extensions.ignoreRecommendations": false,
-"python.languageServer": "Microsoft",
-"liveshare.authenticationProvider": "GitHub",
-"[jsonc]": {
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
-},
-"[html]": {
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
-},
-"workbench.editorAssociations": [
-  {
-    "viewType": "jupyter.notebook.ipynb",
-    "filenamePattern": "*.ipynb"
+  "extensions.ignoreRecommendations": false,
+  "liveshare.authenticationProvider": "GitHub",
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "workbench.startupEditor": "none",
+  "yaml.customTags": [
+    "!And",
+    "!If",
+    "!Not",
+    "!Equals",
+    "!Or",
+    "!FindInMap sequence",
+    "!Base64",
+    "!Cidr",
+    "!Ref",
+    "!Sub",
+    "!GetAtt",
+    "!GetAZs",
+    "!ImportValue",
+    "!Select",
+    "!Select sequence",
+    "!Split",
+    "!Join sequence"
+  ],
+  "yaml.format.enable": true,
+  "editor.cursorStyle": "line",
+  "editor.lineNumbers": "on",
+  "editor.wordSeparators": "/\\()\"':,.;<>~!@#$%^&*|+=[]{}`?-",
+  "editor.wordWrap": "off",
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.enable": {
+    "*": true,
+    "yaml": true,
+    "plaintext": false,
+    "markdown": true,
+    "javascript": false,
+    "typescript": true
+  },
+  "python.showStartPage": false,
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "python.languageServer": "Default",
+  "window.zoomLevel": 1,
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   }
-],
-"workbench.startupEditor": "welcomePage"
 }

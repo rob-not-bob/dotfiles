@@ -1,5 +1,5 @@
 [user]
-	email = robby.kirby@gmail.com
+	email = robert.allen@viasat.com
 	name = Robert Allen
 [pull]
 	rebase = true
@@ -38,3 +38,5 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[init]
+	defaultBranch = main
