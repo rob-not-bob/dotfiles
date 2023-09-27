@@ -33,7 +33,7 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+export JAVA_HOME="/usr/local/Cellar/openjdk@17/17.0.8.1/"
 
 export SIMULATOR='iPhone 11 Pro Max'
 export MY_VIASERVER_HOME=$HOME/wd/MyViasatServer
@@ -44,4 +44,6 @@ alias start-myviaserver='cd $MY_VIASERVER_HOME; yarn && yarn dev'
 alias run-ios-myviasat='cd $MY_VIASAT_HOME/packages/mobile && yarn ios --simulator $SIMULATOR'
 alias run-ios-bday='cd $HOME/wd/BirthdayReminder && yarn ios --simulator $SIMULATOR'
 alias python=/usr/local/bin/python3
+alias g=git
+alias vim=nvim
 

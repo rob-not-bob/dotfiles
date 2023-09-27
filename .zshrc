@@ -7,6 +7,7 @@ setopt EXTENDED_GLOB		# Expand the globbing
 setopt RC_EXPAND_PARAM		# Expand arrays in substitution
 bindkey -v					# enable vim mode
 export KEYTIMEOUT=1			# reduce lag between <ESC> and normal mode to 0.1s
+export EDITOR=nvim
 
 
 # ALIASES
@@ -110,4 +111,4 @@ test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell
 export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="${HOME}/miniconda3/bin:$PATH"
 export PATH="${HOME}/bin:$PATH"
-
+export XDG_CONFIG_HOME="$HOME/.config"
