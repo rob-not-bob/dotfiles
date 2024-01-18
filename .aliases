@@ -20,12 +20,6 @@ alias lsr='ls -l ./*(mh-1)'
 
 alias bc='bc -l -q'
 
-# MV Build Machines
-ICAT_PROD_PEM_FILE=~/wd/icat-prod.pem
-
-alias ssh-jenkins='ssh -i ${ICAT_PROD_PEM_FILE} deployuser@jenkins.icat.viasat.io'
-alias ssh-osx='ssh -i ${ICAT_PROD_PEM_FILE} jenkins@172.27.146.136'
-
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export ANDROID_SDK_ROOT=$ANDROID_HOME
 export PATH=$PATH:$ANDROID_HOME/emulator
@@ -36,15 +30,15 @@ export PATH=$PATH:$ANDROID_HOME/platform-tools
 export JAVA_HOME="/usr/local/Cellar/openjdk@17/17.0.8.1/"
 
 export SIMULATOR='iPhone 11 Pro Max'
-export MY_VIASERVER_HOME=$HOME/wd/MyViasatServer
-export MY_VIASAT_HOME=$HOME/wd/MyViaserver
-export MY_VIASAT_HOME=$HOME/wd/MyViasat
 
-alias start-myviaserver='cd $MY_VIASERVER_HOME; yarn && yarn dev'
-alias run-ios-myviasat='cd $MY_VIASAT_HOME/packages/mobile && yarn ios --simulator $SIMULATOR'
 alias run-ios-bday='cd $HOME/wd/BirthdayReminder && yarn ios --simulator $SIMULATOR'
 alias python=/usr/local/bin/python3
 alias g=git
 alias t=tmux
 alias vim=nvim
 
+alias ff="fd . ~ --type f --unrestricted --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*' | sed 's|/Users/rcallen/||' | fzf-tmux -p --reverse | sed 's|^|/Users/rcallen/|' | xargs nvim"
+alias ffd="fd . ~ --type d --unrestricted --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '.config/tmux/plugins/*' | sed 's|/Users/rcallen/||' | fzf-tmux -p --reverse | sed 's|^|/Users/rcallen/|' | xargs nvim"
+
+alias reload='source ~/.zshrc; tmux kill-server; tmux';
+alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
