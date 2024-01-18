@@ -45,5 +45,6 @@ alias run-ios-myviasat='cd $MY_VIASAT_HOME/packages/mobile && yarn ios --simulat
 alias run-ios-bday='cd $HOME/wd/BirthdayReminder && yarn ios --simulator $SIMULATOR'
 alias python=/usr/local/bin/python3
 alias g=git
+alias t=tmux
 alias vim=nvim
 

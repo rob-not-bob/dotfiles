@@ -53,10 +53,19 @@ return require('packer').startup(function(use)
 			{'L3MON4D3/LuaSnip'},
 		}
 	}
+
   use {
     'nvim-tree/nvim-tree.lua',
     requires = {
       'nvim-tree/nvim-web-devicons', -- optional
     },
   }
+
+  -- Allows swap windows with <leader>ww
+  -- First to select split, second to paste
+	use('wesQ3/vim-windowswap')
+
+  -- Allows navigating between panes + tmux sessions seemlessly
+  -- with C-h,j,k,l
+  use('christoomey/vim-tmux-navigator')
 end)

@@ -159,6 +159,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/Users/rcallen/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
+  },
+  ["vim-tmux-navigator"] = {
+    loaded = true,
+    path = "/Users/rcallen/.local/share/nvim/site/pack/packer/start/vim-tmux-navigator",
+    url = "https://github.com/christoomey/vim-tmux-navigator"
+  },
+  ["vim-windowswap"] = {
+    loaded = true,
+    path = "/Users/rcallen/.local/share/nvim/site/pack/packer/start/vim-windowswap",
+    url = "https://github.com/wesQ3/vim-windowswap"
   }
 }
 

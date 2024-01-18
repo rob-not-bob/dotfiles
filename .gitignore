@@ -23,6 +23,7 @@ bin/.DS_Store
 !.vimrc
 !.vim/
 .vim/*
+!.tmux.conf
 !.zshrc
 !.bashrc
 !.profile

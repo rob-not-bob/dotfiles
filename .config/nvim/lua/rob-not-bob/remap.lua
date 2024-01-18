@@ -37,7 +37,6 @@ vim.keymap.set("n", "<C-l>", "<C-w><C-l>")
 
 vim.keymap.set("n", "<C-u>", "<cmd>vertical resize -5<CR>")
 vim.keymap.set("n", "<C-i>", "<cmd>vertical resize +5<CR>")
-vim.keymap.set("n", "<leader>f", "<cmd>NvimTreeFocus<CR>")
 
 vim.keymap.set("n", "<C-n>", "<cmd>tabnext<CR>")
 vim.keymap.set("n", "<C-p>", "<cmd>tabprev<CR>")

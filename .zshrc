@@ -55,9 +55,6 @@ setopt HIST_FIND_NO_DUPS
 
 source ~/.aliases
 
-bindkey "^K" history-incremental-pattern-search-backward
-bindkey "^J" history-incremental-pattern-search-forward
-
 git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
@@ -112,3 +109,9 @@ export PATH="/usr/local/opt/qt/bin:$PATH"
 export PATH="${HOME}/miniconda3/bin:$PATH"
 export PATH="${HOME}/bin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config"
+
+export PATH="/Users/rcallen/Library/Python/3.9/bin:$PATH"
+
+# Auto launch tmux if not running
+if [ "$TMUX" = "" ]; then tmux; fi
+

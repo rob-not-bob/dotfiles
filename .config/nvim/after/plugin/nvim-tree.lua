@@ -1,3 +1,5 @@
+vim.keymap.set("n", "<leader>f", "<cmd>NvimTreeFocus<CR>")
+
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
@@ -19,7 +21,8 @@ require("nvim-tree").setup({
     dotfiles = true,
   },
   renderer = {
-
+    group_empty = true,
   }
 })
+
 
