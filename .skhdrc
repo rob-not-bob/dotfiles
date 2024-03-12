@@ -184,3 +184,8 @@ alt - s : yabai -m window --toggle sticky
 ctrl + alt - a : yabai -m space --layout bsp
 ctrl + alt - d : yabai -m space --layout float
 
+# Spotify controls
+fn - p: spt playback --previous
+fn - n: spt playback --next
+fn - space: spt playback --toggle
+

@@ -29,6 +29,8 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 vim.keymap.set("n", "<leader>vpp", "<cmd>e ~/.config/nvim/lua/rob-not-bob/packer.lua<CR>")
 
+vim.keymap.set("n", "<leader>h", "<cmd>noh<CR>")
+
 -- Vim keybindings for navigating splits --
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>")
 vim.keymap.set("n", "<C-j>", "<C-w><C-j>")

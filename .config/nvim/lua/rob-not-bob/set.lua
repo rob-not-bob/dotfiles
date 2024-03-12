@@ -28,9 +28,8 @@ vim.opt.colorcolumn = "80"
 
 vim.keymap.set("n", "<leader>s", [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]])
 
--- Enable folding --
-vim.opt.foldenable = true
-vim.opt.foldlevelstart = 10
-vim.opt.foldnestmax = 10
+vim.opt.foldlevelstart = 99
 vim.opt.foldmethod = "indent"
+
+vim.opt.scrolloff = 8
 

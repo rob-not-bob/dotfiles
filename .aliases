@@ -1,3 +1,5 @@
+#!/bin/sh
+
 alias ls='ls -G'
 alias ll='ls -la'
 
@@ -11,6 +13,8 @@ alias ......='cd ../../../../..'
 alias .......='cd ../../../../../..'
 
 alias sz='source ~/.zshrc'
+
+alias ea='vim ~/.aliases'
 alias ez='vim ~/.zshrc'
 alias ev='vim ~/.vimrc'
 
@@ -37,8 +41,45 @@ alias g=git
 alias t=tmux
 alias vim=nvim
 
-alias ff="fd . ~ --type f --unrestricted --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*' | sed 's|/Users/rcallen/||' | fzf-tmux -p --reverse | sed 's|^|/Users/rcallen/|' | xargs nvim"
-alias ffd="fd . ~ --type d --unrestricted --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '.config/tmux/plugins/*' | sed 's|/Users/rcallen/||' | fzf-tmux -p --reverse | sed 's|^|/Users/rcallen/|' | xargs nvim"
+FF_EXCLUDE_LIST="--exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*'"
 
-alias reload='source ~/.zshrc; tmux kill-server; tmux';
+fuzzy_find() {
+  file_type="$1"
+  open_in_program="$2"
+  do_not_use_xargs="$3"
+
+  found_path=$(fd . ~ --type ${file_type} --unrestricted \
+    --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*' \
+    | sed 's|/Users/rcallen/||' | \
+    fzf-tmux -p --reverse | \
+    sed 's|^|/Users/rcallen/|')
+
+  found_path=$(echo ${found_path} | \
+    sed "s/(/\\\(/g" | \
+    sed "s/)/\\\)/g" | \
+    sed "s/\[/\\\[/g" | \
+    sed "s/\]/\\\]/g"
+  )
+
+  if [ -z "${do_not_use_xargs}" ]; then
+    echo "${found_path}" | xargs ${open_in_program}
+  else
+    eval "${open_in_program} ${found_path}"
+  fi
+}
+
+alias ff="fuzzy_find f nvim"
+alias ffo="fuzzy_find f open"
+alias ffd="fuzzy_find d nvim"
+alias ffdo="fuzzy_find d open"
+alias ffcd="fuzzy_find d cd true"
+
 alias config='git --git-dir=$HOME/.cfg/ --work-tree=$HOME'
+
+alias cat='bat'
+
+# Fuzzy find command from history and execute
+alias hg='old_command=$(history 1 | fzf-tmux -p | sed -E "s/^ +[0-9]+ +//"); echo "${old_command}"; eval "${old_command}"'
+
+alias v2g='function video_to_gif(){ ffmpeg -i $1 $2 && gifsicle -O3 $2 -o $2 && osascript -e "display notification \"$2 successfully converted and saved\" with title \"Video 2 Gif SUCCESS!\""};video_to_gif'
+
