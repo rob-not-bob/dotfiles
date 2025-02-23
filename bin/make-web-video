@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -e
+
+# bash script to create gif from avi
+# usage:
+#   make-web-video filename start_time length width
+
+file=$1
+start=$2
+length=$3
+width=${4:-1920}
+filters="fps=30,scale=$width:-1:flags=lanczos"
+
+dir=$(dirname $file)
+filename=$(basename -- "$file")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+# echo params to terminal
+echo "$file $start $length $width $lossy"
+
+if [ -z "$start$length" ]; then
+  ## From https://superuser.com/a/556031
+  ffmpeg -i $file \
+      -vf "fps=30,scale='min($width,iw)':-1:flags=lanczos" \
+      $dir/$filename-s$start-t$length-w$width.mp4
+elif [ -z "$length" ]; then
+  # Treat the second argument as the time to trim from the start
+  ffmpeg -ss $start -i $file \
+      -vf "fps=30,scale='min($width,iw)':-1:flags=lanczos" \
+      $dir/$filename-s$start-t$length-w$width.mp4
+else
+  ffmpeg -ss $start -t $length -i $file \
+      -vf "fps=30,scale='min($width,iw)':-1:flags=lanczos" \
+      $dir/$filename-s$start-t$length-w$width.mp4
+fi
+
+osascript -e "display notification \"$1 successfully converted and saved\" with title \"Make Web Video SUCCESS!\""
+

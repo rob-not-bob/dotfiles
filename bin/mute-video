@@ -1,0 +1,19 @@
+#!/bin/bash
+
+set -e
+
+# bash script to mute video file
+# usage:
+#   mute-video filename
+
+id=$1
+file=$1
+
+dir=$(dirname $file)
+filename=$(basename -- "$file")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+ffmpeg -i $file -vcodec copy -an $dir/$filename-muted.$extension
+
+echo "Output: $dir/$filename-muted.$extension"

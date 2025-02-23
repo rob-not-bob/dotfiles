@@ -1,4 +1,3 @@
-setopt AUTO_CD				# no need to type cd dir, instead just type the dir
 setopt MULTIOS				# Pipe to multiple outputs
 setopt NO_BEEP				# Disable any beeping
 setopt GLOB_COMPLETE		# If we have a glob this will expand it
@@ -8,12 +7,14 @@ setopt EXTENDED_GLOB		# Expand the globbing
 setopt RC_EXPAND_PARAM		# Expand arrays in substitution
 bindkey -v					# enable vim mode
 export KEYTIMEOUT=1			# reduce lag between <ESC> and normal mode to 0.1s
+export EDITOR=nvim
 
 
 # ALIASES
 
-alias ls='ls --color'
-alias ll='ls -la'
+export LSCOLORS="ExFxdxbxCxBxDxxx"
+alias ls='ls -G'
+alias ll='ls -lha'
 
 alias ..='cd ..'
 alias ...='cd ../..'
@@ -31,10 +32,6 @@ alias grep='grep --color=auto'
 alias lsr='ls -l ./*(mh-1)'
 
 alias bc='bc -l -q'
-
-alias c="xclip -selection clipboard"
-alias p="xclip -o -selection clipboard"
-alias open="xdg-open"
 
 HISTFILE=~/.history
 
@@ -56,10 +53,20 @@ setopt HIST_FIND_NO_DUPS
 #zle -N insert-sudo insert_sudo
 #bindkey "\es" insert-sudo
 
-bindkey "^K" history-incremental-pattern-search-backward
-bindkey "^J" history-incremental-pattern-search-forward
+source ~/.aliases
 
-PS1='%C → '
+git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
+}
+
+autoload -Uz vcs_info
+precmd() { vcs_info }
+
+zstyle ':vcs_info:git:*' formats '(%b)'
+
+setopt PROMPT_SUBST
+PROMPT='[%F{red}%n%F{blue}@%F{green}%m %F{magenta}%~%f]%F{yellow} ${vcs_info_msg_0_}%f
+→ '
 
 # Color man pages
 man() {
@@ -96,3 +103,15 @@ compinit
 #}
 #zle -N zle-line-init
 #zle -N zle-keymap-select
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/usr/local/opt/qt/bin:$PATH"
+export PATH="${HOME}/miniconda3/bin:$PATH"
+export PATH="${HOME}/bin:$PATH"
+export XDG_CONFIG_HOME="$HOME/.config"
+
+export PATH="/Users/rcallen/Library/Python/3.9/bin:$PATH"
+
+# Auto launch tmux if not running
+if [ "$TMUX" = "" ]; then tmux; fi
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+set -e
+
+# bash script to create gif from avi
+# usage:
+#   ./make_gif.sh filename start_time length width lossy
+
+id=$1
+file=$1
+start=$2
+length=$3
+width=${4:-1200}
+lossy=${5:-20}
+palette="/tmp/palette.png"
+filters="fps=30,scale=$width:-1:flags=lanczos"
+
+# echo params to terminal
+echo "$file $start $length $width $lossy"
+
+## From https://superuser.com/a/556031
+ffmpeg -ss $start -t $length -i $file \
+    -vf "fps=30,scale=$width:-1:flags=lanczos,split[s0][s1];[s0]palettegen=stats_mode=diff[p];[s1][p]paletteuse=dither=none" \
+    -loop 0 $id-s$start-t$length-w$width-raw.gif
+
+# optimize gif
+gifsicle -O3 $id-s$start-t$length-w$width-raw.gif --lossy=$lossy -o $id-s$start-t$length-w$width-l$lossy-opt.gif
+
+osascript -e "display notification \"$1 successfully converted and saved\" with title \"Video 2 Gif SUCCESS!\""
+
