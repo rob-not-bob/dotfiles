@@ -1,4 +1,8 @@
-#!/usr/bin/env sh
+#!/usr/bin/env zsh
+
+# system integretity protection disabled | scripting addon requirements
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
 
 # global settings
 yabai -m config external_bar                 off
@@ -7,15 +11,13 @@ yabai -m config focus_follows_mouse          on
 yabai -m config window_placement             second_child
 yabai -m config window_topmost               off
 
-# yabai -m config window_opacity               off
-# yabai -m config active_window_opacity        1.0
-# yabai -m config normal_window_opacity        0.90
+ yabai -m config window_opacity               off
+ yabai -m config active_window_opacity        1.0
 # yabai -m config window_opacity_duration      0.0
 
-yabai -m config window_opacity               on
-yabai -m config active_window_opacity        1.0
-yabai -m config normal_window_opacity        0.6
-
+#yabai -m config window_opacity               on
+#yabai -m config active_window_opacity        1.0
+#yabai -m config normal_window_opacity        0.9
 
 yabai -m config window_shadow                on
 
@@ -44,5 +46,9 @@ yabai -m config window_gap                   10
 yabai -m rule --add app="^Godot$" title!=".*Godot Engine$" manage=off
 yabai -m rule --add app="^Godot$" title=".*DEBUG.*" manage=off
 
+# focus window after active space changes
+yabai -m signal --add event=space_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
+# focus window after active display changes
+yabai -m signal --add event=display_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
 
 echo "yabai configuration loaded.."

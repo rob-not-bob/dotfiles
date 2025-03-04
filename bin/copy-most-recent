@@ -10,10 +10,9 @@ IFS='
 '
 for d in ${downloads}; do
   escaped_d=$(echo ${d} | \
-    sed "s/(/\\\(/g" | \
-    sed "s/)/\\\)/g" | \
     sed "s/\[/\\\[/g" | \
-    sed "s/\]/\\\]/g"
+    sed "s/\[/\\\[/g" | \
+    sed "s/&/\\\&/g"
   )
 
   echo "Copying \"$d\" to \"$to_dir\"..."

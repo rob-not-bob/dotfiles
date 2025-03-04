@@ -20,3 +20,4 @@ fi
 . ~/.fastlane/completions/completion.sh
 
 source "/Users/rcallen/.rover/env"
+. "$HOME/.cargo/env"

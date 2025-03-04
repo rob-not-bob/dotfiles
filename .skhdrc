@@ -177,8 +177,9 @@ alt - t : yabai -m window --toggle float;\
 alt - s : yabai -m window --toggle sticky
 
 # toggle sticky, float and resize to picture-in-picture size
-# alt - p : yabai -m window --toggle sticky;\
-#          yabai -m window --grid 5:5:4:0:1:1
+fn - i : yabai -m window --toggle float;\
+         yabai -m window --toggle sticky;\
+         yabai -m window --grid 3:3:2:2:1:1
 
 # change layout of desktop
 ctrl + alt - a : yabai -m space --layout bsp

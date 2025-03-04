@@ -31,13 +31,14 @@ export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
-export JAVA_HOME="/usr/local/Cellar/openjdk@17/17.0.8.1/"
+export JAVA_HOME="/usr/local/Cellar/openjdk@17/17.0.13/"
 
 export SIMULATOR='iPhone 11 Pro Max'
 
 alias run-ios-bday='cd $HOME/wd/BirthdayReminder && yarn ios --simulator $SIMULATOR'
 alias python=/usr/local/bin/python3
 alias g=git
+alias gs="g s"
 alias t=tmux
 alias vim=nvim
 
@@ -55,11 +56,15 @@ fuzzy_find() {
     sed 's|^|/Users/rcallen/|')
 
   found_path=$(echo ${found_path} | \
-    sed "s/(/\\\(/g" | \
-    sed "s/)/\\\)/g" | \
-    sed "s/\[/\\\[/g" | \
-    sed "s/\]/\\\]/g"
+    sed "s|(|\\\(|g" | \
+    sed "s|)|\\\)|g" | \
+    sed "s|)|\\\)|g" | \
+    sed "s|\]|\\\]|g" | \
+    sed "s|\[|\\\[|g" | \
+    sed "s| |\\\ |g" | \
+    sed "s|&|\\\&|g"
   )
+  echo "${found_path}"
 
   if [ -z "${do_not_use_xargs}" ]; then
     echo "${found_path}" | xargs ${open_in_program}
@@ -82,4 +87,11 @@ alias cat='bat'
 alias hg='old_command=$(history 1 | fzf-tmux -p | sed -E "s/^ +[0-9]+ +//"); echo "${old_command}"; eval "${old_command}"'
 
 alias v2g='function video_to_gif(){ ffmpeg -i $1 $2 && gifsicle -O3 $2 -o $2 && osascript -e "display notification \"$2 successfully converted and saved\" with title \"Video 2 Gif SUCCESS!\""};video_to_gif'
+
+alias icat='kitten icat'
+
+alias aseprite='/Users/rcallen/Library/Application\ Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite'
+
+alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
+
 

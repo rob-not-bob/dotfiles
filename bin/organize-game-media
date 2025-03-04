@@ -1,0 +1,249 @@
+#!/bin/zsh
+
+# Media organization and processing script
+# This script will organize screenshots and videos into weekly folders,
+# prompt for renaming files, and optimize/process media as requested
+
+SCREENSHOTS_DIR="$HOME/social_media/screenshots"
+TARGET_DIR="$HOME/social_media/game_social_media/neon_blitz"
+
+alias icat="kitty +kitten icat"
+
+# Function to get the current week folder
+get_week_folder() {
+  local year_week=$(date +%V)  # Get current ISO week number
+  local month=$(date +%B)      # Get current month name
+  echo "${month}/W${year_week}"
+}
+
+# Function to detect file type
+get_file_type() {
+  local file="$1"
+  local mime_type=$(file --mime-type -b "$file")
+  
+  if [[ $mime_type == image/* ]]; then
+    echo "image"
+  elif [[ $mime_type == video/* ]]; then
+    echo "video"
+  else
+    echo "other"
+  fi
+}
+
+# Function to show preview of a file
+preview_file() {
+  local file="$1"
+  local file_type=$(get_file_type "$file")
+  
+  echo "Previewing: $(basename "$file")"
+  
+  if [[ $file_type == "image" ]]; then
+    # Use icat for images in kitty terminal
+    icat "$file"
+  elif [[ $file_type == "video" ]]; then
+    # Use ffmpeg to extract and display a preview frame
+    local temp_frame="/tmp/preview_$(basename "$file" | sed 's/[^a-zA-Z0-9]/_/g').jpg"
+    ffmpeg -hide_banner -loglevel error -i "$file" -ss 00:00:01 -vframes 1 "$temp_frame"
+    sips -Z 1080 "$temp_frame"
+    icat "$temp_frame"
+    rm "$temp_frame"
+  fi
+}
+
+# Function to process files
+process_files() {
+  local -a files
+  files=("$@")
+  local week_folder=$(get_week_folder)
+  local dest_dir="${TARGET_DIR}/${week_folder}"
+  
+  # Create destination directory if it doesn't exist
+  mkdir -p "$dest_dir"
+  
+  echo "Files will be organized into: $dest_dir"
+  echo "-----------------------------------"
+  
+  # First, move all files to destination directory
+  echo "Moving files to destination directory..."
+  local -a moved_files
+  
+  for file in "${files[@]}"; do
+    local filename=$(basename "$file")
+    local dest_file="${dest_dir}/${filename}"
+    
+    # If file with same name exists, add a timestamp
+    if [[ -f "$dest_file" ]]; then
+      local timestamp=$(date +%Y%m%d%H%M%S)
+      local ext="${filename:t:e}"
+      local base="${filename:r}"
+      dest_file="${dest_dir}/${base}_${timestamp}.${ext}"
+    fi
+    
+    echo "Moving: $file -> $dest_file"
+    mv "$file" "$dest_file"  # Use -p to preserve attributes
+    moved_files+=("$dest_file")
+  done
+  
+  local -a renamed_files
+  local -a process_video
+  local -a mute_video
+  local -a create_gif
+  local -a files_to_overwrite
+  
+  # Now process the moved files
+  for file in "${moved_files[@]}"; do
+    preview_file "$file"
+    
+    # Get file extension and base name
+    local filename=$(basename "$file")
+    local ext="${filename:t:e}"
+    local base="${filename:r}"
+    local file_type=$(get_file_type "$file")
+    
+    # Prompt for new file name or removal
+    echo "Enter new name for this file (without extension)"
+    echo "Press Enter to keep original name"
+    echo "Enter 'r' or 'remove' to delete this file"
+    read "new_name?> "
+    
+    # Check if user wants to remove the file
+    if [[ "$new_name" == "r" || "$new_name" == "remove" ]]; then
+      echo "Marking file for removal: $file"
+      rm -f "$file"
+      continue
+    fi
+    
+    # If no new name provided, use original name
+    if [[ -z "$new_name" ]]; then
+      new_name="$base"
+    fi
+    
+    # Store the new file path
+    local new_file="${dest_dir}/${new_name}.${ext}"
+    
+    # Rename the file if the name has changed
+    if [[ "$new_file" != "$file" ]]; then
+      # Check if target file already exists
+      if [[ -f "$new_file" ]]; then
+        local timestamp=$(date +%Y%m%d%H%M%S)
+        new_file="${dest_dir}/${new_name}_${timestamp}.${ext}"
+        echo "File with that name already exists. Using: $(basename "$new_file")"
+      fi
+      
+      echo "Renaming: $file -> $new_file"
+      mv "$file" "$new_file"
+      file="$new_file"  # Update reference for further processing
+    fi
+    
+    renamed_files+=("$file")
+
+    
+    # For videos, ask about optimization, muting and gif creation
+    if [[ $file_type == "video" ]]; then
+      read "optimize?Optimize this video? (Y/n): "
+      if [[ -z "$optimize" || "$optimize" == "y" || "$optimize" == "Y" ]]; then
+        process_video+=("$file")
+
+        local optimized_file="${dest_dir}/${new_name}-optimized.mp4"
+
+        read "overwrite?Overwrite original video file? (Y/n): "
+        if [[ -z "$overwrite" || "$overwrite" == "y" || "$overwrite" == "Y" ]]; then
+          files_to_overwrite+=("$file")
+          file="${dest_dir}/${new_name}.mp4"
+        else
+          file="${optimized_file}"
+        fi
+
+        read "mute?Mute this video? (Y/n): "
+        if [[ -z "$mute" || "$mute" == "y" || "$mute" == "Y" ]]; then
+          mute_video+=("$file")
+        fi
+        
+        read "gif?Create a GIF from this video? (Y/n): "
+        if [[ -z "$gif" || "$gif" == "y" || "$gif" == "Y" ]]; then
+          create_gif+=("$file")
+        fi
+      fi
+    fi
+    
+    echo "-----------------------------------"
+  done
+  
+  # Confirm operations
+  echo "The following operations will be performed:"
+  echo "- ${#renamed_files} files have been moved to $dest_dir"
+  echo "- Optimize ${#process_video} videos"
+  echo "- Mute ${#process_video} optimized videos"
+  echo "- Create GIFs from ${#process_video} optimized videos"
+  echo "- Overwriting ${#files_to_overwrite} original videos"
+  
+  read "confirm?Proceed with these operations? (Y/n): "
+  if [[ -n "$confirm" && "$confirm" != "y" && "$confirm" != "Y" ]]; then
+    echo "Processing cancelled. Files have already been moved to destination."
+    exit 0
+  fi
+  
+  # Process videos and track optimized files
+  for video in "${process_video[@]}"; do
+    echo "Optimizing video: \"$video\""
+    make-web-video "$video"
+    
+    # Calculate the optimized filename
+    local video_name=$(basename "$video")
+    local video_base="${video_name:r}"
+    local optimized_file="${dest_dir}/${video_base}-optimized.mp4"
+    
+    # Verify the optimized file exists
+    if [[ -f "$optimized_file" ]]; then
+      echo "Optimized file created: \"$optimized_file\""
+    else
+      echo "Warning: Optimized file was not created for \"$video\""
+    fi
+
+    # Remove original file if marked for overwrite
+    for file in "${files_to_overwrite[@]}"; do
+      local file_name=$(basename "$file")
+      local file_base="${file_name:r}"
+      if [[ "$file_base" == "$video_base" ]]; then
+        echo "Removing original video: $video"
+        rm -f "$video"
+        mv "$optimized_file" "${dest_dir}/${video_base}.mp4"
+      fi
+    done
+  done
+  
+  # Mute videos
+  for video in "${mute_video[@]}"; do
+    echo "Muting video: \"$video\""
+    mute-video "$video"
+  done
+  
+  # Create GIFs
+  for video in "${create_gif[@]}"; do
+    echo "Creating GIF from: \"$video\""
+    make-gif "$video"
+  done
+
+  echo "All operations completed!"
+}
+
+# Main script execution
+echo "Media Organization and Processing Script"
+echo "========================================"
+
+# Find media files in the screenshots directory modified within the last week
+# Use null-terminated strings to handle spaces in filenames
+echo "Searching for media files in $SCREENSHOTS_DIR modified within the last week..."
+files=()
+while IFS= read -r -d $'\0' file; do
+  files+=("$file")
+done < <(find "$SCREENSHOTS_DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.mp4" -o -name "*.mov" -o -name "*.webm" \) -mtime -7 -print0)
+
+if [[ ${#files} -eq 0 ]]; then
+  echo "No media files found in $SCREENSHOTS_DIR that were modified within the last week."
+  exit 1
+fi
+
+echo "Found ${#files} media files modified within the last week."
+process_files "${files[@]}"
+
