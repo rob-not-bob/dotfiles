@@ -1,0 +1,8 @@
+#!/bin/zsh
+
+VLC='/Applications/VLC.app/Contents/MacOS/VLC'
+
+# yt-dlp -o - "$1" | ${VLC} - 
+
+URLS=(${(ps:\n:)"$(yt-dlp "$1" --get-url)"})
+${VLC} "${URLS[1]}" --input-slave "${URLS[2]}"

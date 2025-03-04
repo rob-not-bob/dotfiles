@@ -1,0 +1,22 @@
+#!/bin/sh
+
+num_items=$1
+from_dir=$2
+to_dir=${3:-.}
+
+downloads=$(ls -t "${from_dir}" | head -n ${num_items})
+
+IFS='
+'
+for d in ${downloads}; do
+  escaped_d=$(echo ${d} | \
+    sed "s/\[/\\\[/g" | \
+    sed "s/\[/\\\[/g" | \
+    sed "s/&/\\\&/g"
+  )
+
+  echo "Moving \"$d\" to \"$to_dir\"..."
+  mv "${from_dir}/${escaped_d}" "$to_dir"
+done
+unset IFS
+

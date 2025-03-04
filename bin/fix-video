@@ -1,0 +1,22 @@
+#!/bin/bash
+
+set -e
+
+# bash script to create gif from avi
+# usage:
+#   fix-video video width
+
+file=$1
+
+dir=$(dirname $file)
+filename=$(basename -- "$file")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+# echo params to terminal
+echo "$file $start $length $width $lossy"
+
+## From https://stackoverflow.com/a/20848224
+ffmpeg -i $file -vcodec libx264 \
+ -vf "crop=floor(iw/2)*2:floor(ih/2)*2" \
+ $filename-fixes.mp4

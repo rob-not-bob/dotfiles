@@ -1,0 +1,165 @@
+#!/bin/zsh
+
+# Default settings
+DELETE_ORIGINAL=false
+QUALITY="medium"
+
+# Quality settings (in kbps)
+declare -A QUALITY_SETTINGS=(
+    [low]="96k"
+    [medium]="192k"
+    [high]="320k"
+)
+
+# Find ffmpeg path
+FFMPEG=$(which ffmpeg)
+if [[ -z "$FFMPEG" ]]; then
+    echo "Error: ffmpeg not found in PATH" >&2
+    exit 1
+fi
+RM=$(which rm)
+FIND=$(which find)
+
+# Help message
+show_help() {
+    cat << EOF
+Usage: ${0:t} [-d] [-q quality] path [path ...]
+    -d  Delete original WAV files after conversion
+    -q  Set quality level (low|medium|high), defaults to medium
+    -h  Show this help message
+
+Quality settings:
+    low    -  96 kbps
+    medium - 192 kbps (default)
+    high   - 320 kbps
+
+Paths can be any combination of:
+    - WAV files
+    - Directories (will recursively convert all WAV files)
+
+Example: ${0:t} -d -q high file1.wav file2.wav /path/to/directory
+EOF
+}
+
+# Parse command line options
+while getopts "dq:h" opt; do
+    case $opt in
+        d)
+            DELETE_ORIGINAL=true
+            ;;
+        q)
+            case "${OPTARG:l}" in
+                low|medium|high)
+                    QUALITY="${OPTARG:l}"
+                    ;;
+                *)
+                    echo "Error: Invalid quality setting. Use 'low', 'medium', or 'high'" >&2
+                    exit 1
+                    ;;
+            esac
+            ;;
+        h)
+            show_help
+            exit 0
+            ;;
+        \?)
+            echo "Invalid option: -$OPTARG" >&2
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+# Remove the parsed options from the arguments list
+shift $((OPTIND - 1))
+
+# Check if at least one path is provided
+if [[ $# -eq 0 ]]; then
+    echo "Error: Please provide at least one file or directory path" >&2
+    show_help
+    exit 1
+fi
+
+# Convert function
+convert_wav_to_mp3() {
+    local wav_file="$1"
+    local mp3_file="${wav_file:r}.mp3"
+    local bitrate=${QUALITY_SETTINGS[$QUALITY]}
+    local temp_output
+    
+    # Check if the file exists and is readable
+    if [[ ! -r "$wav_file" ]]; then
+        echo "Error: Cannot read file '$wav_file'" >&2
+        return 1
+    fi
+    
+    echo "Converting: $wav_file (Quality: $QUALITY - $bitrate)"
+    
+    # Run ffmpeg with full path and capture output
+    temp_output=$("$FFMPEG" -i "$wav_file" -codec:a libmp3lame -b:a "$bitrate" "$mp3_file" -y 2>&1)
+    if [[ $? -eq 0 ]]; then
+        echo "Successfully created: $mp3_file"
+        if [[ "$DELETE_ORIGINAL" == "true" ]]; then
+            "$RM" "$wav_file"
+            echo "Deleted original: $wav_file"
+        fi
+        return 0
+    else
+        echo "Error converting: $wav_file" >&2
+        echo "ffmpeg output:" >&2
+        echo "$temp_output" >&2
+        return 1
+    fi
+}
+
+# Process a single path (file or directory)
+process_path() {
+    local path="$1"
+    
+    # Skip if path doesn't exist
+    if [[ ! -e "$path" ]]; then
+        echo "Warning: '$path' does not exist, skipping..." >&2
+        return 1
+    fi
+    
+    if [[ -f "$path" ]]; then
+        # Check if it's a WAV file
+        if [[ "${path:l}" == *.wav ]]; then
+            convert_wav_to_mp3 "$path"
+        else
+            echo "Warning: '$path' is not a WAV file, skipping..." >&2
+        fi
+    elif [[ -d "$path" ]]; then
+        # Find and process all WAV files in directory
+        local found_files=0
+        while IFS= read -r wav_file; do
+            convert_wav_to_mp3 "$wav_file"
+            ((found_files++))
+        done < <("$FIND" "$path" -type f -iname "*.wav")
+        
+        if ((found_files == 0)); then
+            echo "Warning: No WAV files found in directory '$path'" >&2
+        fi
+    else
+        echo "Warning: '$path' is neither a file nor a directory, skipping..." >&2
+    fi
+}
+
+# Process all provided paths
+PROCESSED_COUNT=0
+TOTAL_PATHS=$#
+
+echo "Starting conversion process with $TOTAL_PATHS path(s)..."
+echo "Quality: $QUALITY (${QUALITY_SETTINGS[$QUALITY]})"
+echo "Delete originals: $DELETE_ORIGINAL"
+echo "Using ffmpeg: $FFMPEG"
+echo "---"
+
+for path in "$@"; do
+    ((PROCESSED_COUNT++))
+    echo "Processing path $PROCESSED_COUNT of $TOTAL_PATHS: $path"
+    process_path "$path"
+    echo "---"
+done
+
+echo "Conversion process complete!"
