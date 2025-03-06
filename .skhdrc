@@ -30,7 +30,7 @@
 #                                  an EOL character signifies the end of the bind.
 
 # restart commands
-cmd + alt - escape: brew services restart yabai
+cmd + alt - escape: yabai --restart-service
 ctrl + alt - escape: brew services restart skhd
 
 # open terminal
