@@ -1,249 +1,403 @@
-#!/bin/zsh
+#!/usr/bin/env python3
 
-# Media organization and processing script
-# This script will organize screenshots and videos into weekly folders,
-# prompt for renaming files, and optimize/process media as requested
+import os
+import sys
+import shutil
+import subprocess
+import datetime
+import re
+import time
+import mimetypes
+from pathlib import Path
+from enum import Enum
 
-SCREENSHOTS_DIR="$HOME/social_media/screenshots"
-TARGET_DIR="$HOME/social_media/game_social_media/neon_blitz"
 
-alias icat="kitty +kitten icat"
+HOME = str(Path.home())
+SCREENSHOTS_DIR = os.path.join(HOME, "Pictures/screenshots")
+TARGET_DIR = os.path.join(HOME, "Pictures/game_social_media/neon_blitz")
+EXTENSIONS = ['.png', '.jpg', '.jpeg', '.gif', '.mp4', '.mov', '.webm']
+TWEETS_FILE_NAME = "tweets.md"
+TWEETS_TEMPLATE="""
+## {file_name}
 
-# Function to get the current week folder
-get_week_folder() {
-  local year_week=$(date +%V)  # Get current ISO week number
-  local month=$(date +%B)      # Get current month name
-  echo "${month}/W${year_week}"
-}
+![{file_name}]({file_path})
 
-# Function to detect file type
-get_file_type() {
-  local file="$1"
-  local mime_type=$(file --mime-type -b "$file")
-  
-  if [[ $mime_type == image/* ]]; then
-    echo "image"
-  elif [[ $mime_type == video/* ]]; then
-    echo "video"
-  else
-    echo "other"
-  fi
-}
+**Prompt: {prompt}**
 
-# Function to show preview of a file
-preview_file() {
-  local file="$1"
-  local file_type=$(get_file_type "$file")
-  
-  echo "Previewing: $(basename "$file")"
-  
-  if [[ $file_type == "image" ]]; then
-    # Use icat for images in kitty terminal
-    icat "$file"
-  elif [[ $file_type == "video" ]]; then
-    # Use ffmpeg to extract and display a preview frame
-    local temp_frame="/tmp/preview_$(basename "$file" | sed 's/[^a-zA-Z0-9]/_/g').jpg"
-    ffmpeg -hide_banner -loglevel error -i "$file" -ss 00:00:01 -vframes 1 "$temp_frame"
-    sips -Z 1080 "$temp_frame"
-    icat "$temp_frame"
-    rm "$temp_frame"
-  fi
-}
+{tweets}
+"""
+ALT_LLM_PROMPT="""
+You are the main developer for my indie game dev company, Binary Sunrise. Currently you are the sole developer and are working on a game called Neon Blitz, an arena shooter rogue-like with a sci-fi aesthetic.
 
-# Function to process files
-process_files() {
-  local -a files
-  files=("$@")
-  local week_folder=$(get_week_folder)
-  local dest_dir="${TARGET_DIR}/${week_folder}"
-  
-  # Create destination directory if it doesn't exist
-  mkdir -p "$dest_dir"
-  
-  echo "Files will be organized into: $dest_dir"
-  echo "-----------------------------------"
-  
-  # First, move all files to destination directory
-  echo "Moving files to destination directory..."
-  local -a moved_files
-  
-  for file in "${files[@]}"; do
-    local filename=$(basename "$file")
-    local dest_file="${dest_dir}/${filename}"
-    
-    # If file with same name exists, add a timestamp
-    if [[ -f "$dest_file" ]]; then
-      local timestamp=$(date +%Y%m%d%H%M%S)
-      local ext="${filename:t:e}"
-      local base="${filename:r}"
-      dest_file="${dest_dir}/${base}_${timestamp}.${ext}"
-    fi
-    
-    echo "Moving: $file -> $dest_file"
-    mv "$file" "$dest_file"  # Use -p to preserve attributes
-    moved_files+=("$dest_file")
-  done
-  
-  local -a renamed_files
-  local -a process_video
-  local -a mute_video
-  local -a create_gif
-  local -a files_to_overwrite
-  
-  # Now process the moved files
-  for file in "${moved_files[@]}"; do
-    preview_file "$file"
-    
-    # Get file extension and base name
-    local filename=$(basename "$file")
-    local ext="${filename:t:e}"
-    local base="${filename:r}"
-    local file_type=$(get_file_type "$file")
-    
-    # Prompt for new file name or removal
-    echo "Enter new name for this file (without extension)"
-    echo "Press Enter to keep original name"
-    echo "Enter 'r' or 'remove' to delete this file"
-    read "new_name?> "
-    
-    # Check if user wants to remove the file
-    if [[ "$new_name" == "r" || "$new_name" == "remove" ]]; then
-      echo "Marking file for removal: $file"
-      rm -f "$file"
-      continue
-    fi
-    
-    # If no new name provided, use original name
-    if [[ -z "$new_name" ]]; then
-      new_name="$base"
-    fi
-    
-    # Store the new file path
-    local new_file="${dest_dir}/${new_name}.${ext}"
-    
-    # Rename the file if the name has changed
-    if [[ "$new_file" != "$file" ]]; then
-      # Check if target file already exists
-      if [[ -f "$new_file" ]]; then
-        local timestamp=$(date +%Y%m%d%H%M%S)
-        new_file="${dest_dir}/${new_name}_${timestamp}.${ext}"
-        echo "File with that name already exists. Using: $(basename "$new_file")"
-      fi
-      
-      echo "Renaming: $file -> $new_file"
-      mv "$file" "$new_file"
-      file="$new_file"  # Update reference for further processing
-    fi
-    
-    renamed_files+=("$file")
+You are going to write tweets based on a description / piece of inspiration for an image or video that is going to be included with the tweet. This piece of media will be of something you recently worked on, usually of the game. Respond with 6 possible tweets based on this description that can be used to promote the game / company.
+
+Within these 6 tweets you may use between the following hashtags depending on the content:
+#gamedev - for general tweets about game development
+#indiedev - fairly generic hashtag, but can be used to emphasize when something impressive was accomplished by a lone developer
+#godotengine - when the content is either technical or impressive. If the tweet describes something specific with programming and development then this is likely a good tag as it's specific to godot developers. When the media is impressive, it can help show what's possible in the engine
+#screenshotsaturday - for a picture that does a really great job of representing what the game is about to someone new
+
+Other hashtags are okay as well but only if they fit the tweet. Never use more than 2 hashtags in any tweet.
+
+Here are some example good tweets by other developers.
+------------------------------
+---
+Sea Sniffers desert sailing vibes #gamedev #pixelart
+CRT filter will be included in the options of the final release ✨
+---
+so the boat in my game Spilled! actually has a propeller that spins when you drive :)
+
+it's a small detail but I like small details :D
+game is out now btw!!!!!
+---
+All the plant textures you see in my game come from photos I took myself !! 🌿🌾🪻
+
+I made a herbarium, and for the toads, it's my father's hand🖐️🐸
+---
+Check out this 3d fish book. It's not actually 3d, but I'm pretty pleased with the page flip effect :p
+---
+Dear lord, RichTextLabel is broken yet again (still) #GodotEngine
+---
+I added remote call functionality to the dialog system! #screenshotsaturday
+
+Character portraits are automatically cropped and get a transmission distortion. Speech audio even goes through a high-pass filter for some extra polish ✨
+---
+I spent some time improving on the mesh warp animations for the fish. I'm very happy with the improvement, they look so much more alive! #gamedev
+
+Fish will now also disperse when Momi moves towards them. ✨
+
+Now I'm sick of this stupid test level. I'm gonna make some art!
+---
+new art setup! Also, a new w.i.p. :)
+---
+------------------------------
+
+Imitate their casual tone and relaxed style.
+Focus on sounding like a developer sharing their work, not a marketing team trying to sell something.
+Think less "hype" and more like sharing a small update or observation about the development process.
+Occasionally use lowercase for a more relaxed feel, and try to incorporate text-based emojis like ":)", ":p", ":D", "D:", ":/", ":o", ";-;", ">:]" ">:[" where appropriate to match the casual tone of the examples.
+**Aim for a tone that is understated and even slightly self-deprecating or humorous at times.**
+**Avoid overly positive or exclamatory language unless it's mimicking the specific tone of one of the examples.**
+
+Here is the description of the media / inspiration for the tweet: "%s"
+
+Respond only with the 6 tweets and nothing else.
+"""
+
+
+class MediaType(Enum):
+    Image = 1
+    Video = 2
+
+
+class Media:
+    type = MediaType.Image
+    description = None
+    should_delete_file = False
+
+    current_file_path = None
+
+    orig_file_path = None
+    orig_file_name = None
+    orig_file_extension = None
+
+    dest_dir = None
+    dest_file_name = None
+    dest_file_path = None
 
     
-    # For videos, ask about optimization, muting and gif creation
-    if [[ $file_type == "video" ]]; then
-      read "optimize?Optimize this video? (Y/n): "
-      if [[ -z "$optimize" || "$optimize" == "y" || "$optimize" == "Y" ]]; then
-        process_video+=("$file")
+    def __init__(self, file_path):
+        self.orig_file_path = file_path
+        self.orig_file_name = os.path.basename(file_path)
+        _, self.orig_file_extension = os.path.splitext(self.orig_file_path)
+        self.current_file_path = file_path
 
-        local optimized_file="${dest_dir}/${new_name}-optimized.mp4"
 
-        read "overwrite?Overwrite original video file? (Y/n): "
-        if [[ -z "$overwrite" || "$overwrite" == "y" || "$overwrite" == "Y" ]]; then
-          files_to_overwrite+=("$file")
-          file="${dest_dir}/${new_name}.mp4"
-        else
-          file="${optimized_file}"
-        fi
+    def get_preview_file(self):
+        return self.orig_file_path
 
-        read "mute?Mute this video? (Y/n): "
-        if [[ -z "$mute" || "$mute" == "y" || "$mute" == "Y" ]]; then
-          mute_video+=("$file")
-        fi
+
+    def prompt(self):
+        self.preview()
+
+        print(f"Enter new name for this {self.type.name.lower()} (without extension)")
+        print("Press Enter to keep original name")
+        print("Enter 'r' or 'remove' to delete this file")
+        new_name = input("> ")
+
+        if new_name in ['r', 'remove']:
+            print(f"Marking file for removal: {self.orig_file_path}")
+            self.should_delete_file = True
+            return
+
+        if not new_name:
+            new_name = self.orig_file_name
+
+        self.dest_file_name = new_name
+
+        print("Enter a description for this file")
+        self.description = input("> ")
+
+
+    def preview(self):
+        preview_file_path = self.get_preview_file()
+        subprocess.run(['kitty', '+kitten', 'icat', preview_file_path])
+
+
+    def move_to_new_location(self):
+        self.dest_file_path = os.path.join(self.dest_dir, f"{self.dest_file_name}{self.orig_file_extension}")
+        #shutil.move(self.orig_file_path, self.dest_file_path)
+        shutil.copy(self.orig_file_path, self.dest_file_path)
+        self.current_file_path = self.dest_file_path
+
+
+    def delete(self):
+        os.remove(self.current_file_path)
+
+
+    def prompt_llm(self):
+        print(f"Prompting LLM for {self.dest_file_name}...")
+        completed_process = subprocess.run(
+            ['ollama', 'run', 'gemma3:12b', ALT_LLM_PROMPT % (self.description)],
+            capture_output=True,
+            text=True,
+        )
+        output = completed_process.stdout
+
+        tweets_file_path = os.path.join(self.dest_dir, TWEETS_FILE_NAME)
+        with open(tweets_file_path, "a") as f:
+            f.write(TWEETS_TEMPLATE.format(
+                file_name=self.dest_file_name,
+                file_path=self.dest_file_path,
+                prompt=self.description,
+                tweets=output,
+            ))
+
+
+    def execute(self):
+        if self.should_delete_file:
+            self.delete()
+            return
+
+        self.move_to_new_location()
+        if self.description:
+            self.prompt_llm()
+
+
+
+class VideoMedia(Media):
+    temp_preview_image = None
+    should_mute = False
+    should_make_gif = False
+
+    def __init__(self, file_path):
+        super().__init__(file_path)
+        self.type = MediaType.Video
+
+
+    def get_preview_file(self):
+        """Create temporary preview frame from video"""
+        safe_name = re.sub(r'[^a-zA-Z0-9]', '_', os.path.basename(self.current_file_path))
+        self.temp_preview_image = f"/tmp/preview_{safe_name}.jpg"
         
-        read "gif?Create a GIF from this video? (Y/n): "
-        if [[ -z "$gif" || "$gif" == "y" || "$gif" == "Y" ]]; then
-          create_gif+=("$file")
-        fi
-      fi
-    fi
+        try:
+            # Extract a frame
+            subprocess.run(['ffmpeg', '-hide_banner', '-loglevel', 'error', 
+                           '-i', self.current_file_path, '-ss', '00:00:01', '-vframes', '1', self.temp_preview_image], 
+                           check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            # Resize frame
+            subprocess.run(['sips', '-Z', '1080', self.temp_preview_image], 
+                          check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            
+            return self.temp_preview_image
+        except subprocess.SubprocessError as e:
+            print(f"Error creating preview: {e}")
+            return None
+
+
+    def prompt(self):
+        super().prompt()
+        # Check if file should be muted
+        mute = input("Mute this video? (Y/n): ")
+        self.should_mute = not mute or mute.lower() == 'y'
+        
+        # Check if GIF should be created
+        gif = input("Create a GIF from this video? (Y/n): ")
+        self.should_make_gif = not gif or gif.lower() == 'y'
+
+
+    def preview(self):
+        super().preview()
+        if self.temp_preview_image and os.path.exists(self.temp_preview_image):
+            os.remove(self.temp_preview_image)
+            self.temp_preview_image = None
+
+
+    def optimize(self):
+        subprocess.run(['make-web-video', self.current_file_path], check=True)
+        if self.orig_file_extension == ".mov":
+            # Delete wav file and only keep optimized file
+            self.delete()
+            self.current_file_path = os.path.join(self.dest_dir, f"{self.dest_file_name}.mp4")
+
+
+    def mute(self):
+        subprocess.run(['mute-video', self.current_file_path], check=True)
+
+
+    def make_gif(self):
+        subprocess.run(['make-gif', self.current_file_path], check=True)
+
+
+    def execute(self):
+        super().execute()
+
+        if self.should_delete_file:
+            return
+
+        self.optimize()
+
+        if self.should_mute:
+            self.mute()
+        if self.should_make_gif:
+            self.make_gif()
+
+
+def get_week_folder():
+    """Get the current week folder path"""
+    now = datetime.datetime.now()
+    month = now.strftime("%B")
+    year_week = now.strftime("%V")  # ISO week number
+    return os.path.join(month, f"W{year_week}")
+
+
+def get_dest_dir():
+    week_folder = get_week_folder()
+    return os.path.join(TARGET_DIR, week_folder)
+
+
+def create_media(file_path):
+    """Detect file type (image, video, or other)"""
+    mime_type, _ = mimetypes.guess_type(file_path)
+
+    media = None
     
-    echo "-----------------------------------"
-  done
-  
-  # Confirm operations
-  echo "The following operations will be performed:"
-  echo "- ${#renamed_files} files have been moved to $dest_dir"
-  echo "- Optimize ${#process_video} videos"
-  echo "- Mute ${#process_video} optimized videos"
-  echo "- Create GIFs from ${#process_video} optimized videos"
-  echo "- Overwriting ${#files_to_overwrite} original videos"
-  
-  read "confirm?Proceed with these operations? (Y/n): "
-  if [[ -n "$confirm" && "$confirm" != "y" && "$confirm" != "Y" ]]; then
-    echo "Processing cancelled. Files have already been moved to destination."
-    exit 0
-  fi
-  
-  # Process videos and track optimized files
-  for video in "${process_video[@]}"; do
-    echo "Optimizing video: \"$video\""
-    make-web-video "$video"
+    if mime_type and mime_type.startswith('image/'):
+        media = Media(file_path)
+    elif mime_type and mime_type.startswith('video/'):
+        media = VideoMedia(file_path)
+
+    if media:
+        media.dest_dir = get_dest_dir()
     
-    # Calculate the optimized filename
-    local video_name=$(basename "$video")
-    local video_base="${video_name:r}"
-    local optimized_file="${dest_dir}/${video_base}-optimized.mp4"
+    return media
+
+
+def find_recent_media_files():
+    """Find media files modified within the last week"""
+    files = []
+    now = time.time()
+    week_ago = now - (7 * 24 * 60 * 60)
     
-    # Verify the optimized file exists
-    if [[ -f "$optimized_file" ]]; then
-      echo "Optimized file created: \"$optimized_file\""
-    else
-      echo "Warning: Optimized file was not created for \"$video\""
-    fi
+    for root, _, filenames in os.walk(SCREENSHOTS_DIR):
+        for filename in filenames:
+            if any(filename.lower().endswith(ext) for ext in EXTENSIONS):
+                file_path = os.path.join(root, filename)
+                if os.path.getmtime(file_path) > week_ago:
+                    files.append(file_path)
+    
+    return files
 
-    # Remove original file if marked for overwrite
-    for file in "${files_to_overwrite[@]}"; do
-      local file_name=$(basename "$file")
-      local file_base="${file_name:r}"
-      if [[ "$file_base" == "$video_base" ]]; then
-        echo "Removing original video: $video"
-        rm -f "$video"
-        mv "$optimized_file" "${dest_dir}/${video_base}.mp4"
-      fi
-    done
-  done
-  
-  # Mute videos
-  for video in "${mute_video[@]}"; do
-    echo "Muting video: \"$video\""
-    mute-video "$video"
-  done
-  
-  # Create GIFs
-  for video in "${create_gif[@]}"; do
-    echo "Creating GIF from: \"$video\""
-    make-gif "$video"
-  done
 
-  echo "All operations completed!"
-}
+def summarize_changes(media_files):
+    moved_count = 0
+    optimize_count = 0
+    delete_count = 0
+    mute_count = 0
+    gif_count = 0
 
-# Main script execution
-echo "Media Organization and Processing Script"
-echo "========================================"
+    for media in media_files:
+        if media.should_delete_file:
+            delete_count += 1
+            continue
 
-# Find media files in the screenshots directory modified within the last week
-# Use null-terminated strings to handle spaces in filenames
-echo "Searching for media files in $SCREENSHOTS_DIR modified within the last week..."
-files=()
-while IFS= read -r -d $'\0' file; do
-  files+=("$file")
-done < <(find "$SCREENSHOTS_DIR" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" -o -name "*.gif" -o -name "*.mp4" -o -name "*.mov" -o -name "*.webm" \) -mtime -7 -print0)
+        moved_count += 1
+        if media.type == MediaType.Video:
+            optimize_count += 1
 
-if [[ ${#files} -eq 0 ]]; then
-  echo "No media files found in $SCREENSHOTS_DIR that were modified within the last week."
-  exit 1
-fi
+            if media.should_mute:
+                mute_count += 1
+            if media.should_make_gif:
+                gif_count += 1
 
-echo "Found ${#files} media files modified within the last week."
-process_files "${files[@]}"
 
+    print("The following operations will be performed:")
+    print(f"- {moved_count} files will be moved to {get_dest_dir()}")
+    print(f"- {mute_count} files will be deleted")
+    print(f"- {optimize_count} videos will be optimized")
+    print(f"- {mute_count} videos will be muted")
+    print(f"- {gif_count} gifs will be created from videos")
+
+
+def process_files(file_paths):
+    dest_dir = get_dest_dir()
+    
+    # Create destination directory if it doesn't exist
+    os.makedirs(dest_dir, exist_ok=True)
+
+    print(f"Files will be organized into: {dest_dir}")
+    print("-----------------------------------")
+
+    media_files = []
+    for file_path in file_paths:
+        media = create_media(file_path)
+        if media:
+            media_files.append(media)
+
+    for media in media_files:
+        media.prompt()
+
+    # Confirm operations
+    summarize_changes(media_files)
+    confirm = input("Proceed with these operations? (Y/n): ")
+    if confirm and confirm.lower() != 'y':
+        print("Processing cancelled")
+        return
+
+    for media in media_files:
+        media.execute()
+
+    print("All operations completed!")
+
+
+def prompt_open_dir():
+    dest_dir = get_dest_dir()
+
+    open_dir = input(f"Open {dest_dir} (Y/n): ")
+    if not open_dir or open_dir.lower() == 'y':
+       subprocess.run(['open', dest_dir])
+
+
+def main():
+    """Main script execution"""
+    print("Media Organization and Processing Script")
+    print("========================================")
+    
+    # Find media files
+    files = find_recent_media_files()
+    
+    if not files:
+        print(f"No media files found in {SCREENSHOTS_DIR} that were modified within the last week.")
+        prompt_open_dir()
+        return 1
+    
+    print(f"Found {len(files)} media files modified within the last week.")
+    process_files(files)
+    prompt_open_dir()
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
