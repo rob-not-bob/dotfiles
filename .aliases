@@ -50,10 +50,10 @@ fuzzy_find() {
   do_not_use_xargs="$3"
 
   found_path=$(fd . ~ --type ${file_type} --unrestricted \
-    --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude Movies --exclude Pictures --exclude Music --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*' \
-    | sed 's|/Users/rcallen/||' | \
+    --exclude .git --exclude .godot --exclude node_modules --exclude .zsh_sessions --exclude .cache --exclude .DS_Store --exclude .vim --exclude .vscode --exclude Applications --exclude .Trash --exclude .npm --exclude Library --exclude .local --exclude .svelte-kit --exclude '*.import' --exclude '*.lib' --exclude '*.dll' --exclude '*.bak' --exclude '.CFUserTextEncoding' --exclude '.config/tmux/plugins*' \
+    | sed "s|/Users/$USER/||" | \
     fzf-tmux -p --reverse | \
-    sed 's|^|/Users/rcallen/|')
+    sed "s|^|/Users/$USER/|")
 
   found_path=$(echo ${found_path} | \
     sed "s|(|\\\(|g" | \
@@ -90,7 +90,7 @@ alias v2g='function video_to_gif(){ ffmpeg -i $1 $2 && gifsicle -O3 $2 -o $2 && 
 
 alias icat='kitten icat'
 
-alias aseprite='/Users/rcallen/Library/Application\ Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite'
+alias aseprite="/Users/$USER/Library/Application\ Support/Steam/steamapps/common/Aseprite/Aseprite.app/Contents/MacOS/aseprite"
 
 alias vlc='/Applications/VLC.app/Contents/MacOS/VLC'
 

@@ -38,5 +38,7 @@ else
       "$dir/$filename-optimized.mp4"
 fi
 
+mv "$dir/$filename-optimized.mp4" "$dir/$filename.mp4"
+
 osascript -e "display notification \"$1 successfully converted and saved\" with title \"Make Web Video SUCCESS!\""
 

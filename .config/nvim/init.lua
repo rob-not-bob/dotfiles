@@ -1,5 +1,3 @@
-require("rob-not-bob")
-
-vim.o.background = "dark"
-vim.cmd([[colorscheme gruvbox]])
-
+require("config.lazy")
+require("config.remap")
+require("config.set")

@@ -6,14 +6,16 @@ set -e
 # usage:
 #   mute-video filename
 
-id=$1
 file=$1
 
 dir=$(dirname $file)
 filename=$(basename -- "$file")
 extension="${filename##*.}"
 filename="${filename%.*}"
+muted_filename="$dir/$filename-muted.$extension"
 
-ffmpeg -i $file -vcodec copy -an $dir/$filename-muted.$extension
+ffmpeg -i "$file" -vcodec copy -an "$muted_filename"
+mv "$muted_filename" "$file"
 
-echo "Output: $dir/$filename-muted.$extension"
+echo "Muted file $file"
+

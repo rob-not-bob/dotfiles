@@ -7,7 +7,7 @@ sudo yabai --load-sa
 # global settings
 yabai -m config external_bar                 off
 yabai -m config mouse_follows_focus          off
-yabai -m config focus_follows_mouse          on
+yabai -m config focus_follows_mouse          autoraise
 yabai -m config window_placement             second_child
 yabai -m config window_topmost               off
 
@@ -45,10 +45,13 @@ yabai -m config window_gap                   10
 # rules
 yabai -m rule --add app="^Godot$" title!=".*Godot Engine$" manage=off
 yabai -m rule --add app="^Godot$" title=".*DEBUG.*" manage=off
+yabai -m rule --add app="^(Software Update|System Preferences|System Settings)$" manage=off
 
 # focus window after active space changes
 yabai -m signal --add event=space_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
 # focus window after active display changes
 yabai -m signal --add event=display_changed action="yabai -m window --focus \$(yabai -m query --windows --space | jq .[0].id)"
+
+borders active_color=0xffcf33ff inactive_color=0xff494d64 width=6.0 &
 
 echo "yabai configuration loaded.."

@@ -115,3 +115,6 @@ export PATH="/Users/rcallen/Library/Python/3.9/bin:$PATH"
 # Auto launch tmux if not running
 if [ "$TMUX" = "" ]; then tmux; fi
 
+
+# Created by `pipx` on 2025-03-22 20:44:06
+export PATH="$PATH:/Users/rob-not-bob/.local/bin"
